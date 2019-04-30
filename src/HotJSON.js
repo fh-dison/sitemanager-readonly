@@ -12,10 +12,7 @@ function HotJSON() {
   //  Can use nested try/catch etc for advanced error handling
   //  Ex:  API data can't be parsed properly
   const dataParser = (data, headers) => {
-console.log ('dataParser()', data);
     try {
-      const r = JSON.parse(data);
-      console.log ("r", r);
       return JSON.parse(data);
 
     } catch (e) {
@@ -28,20 +25,16 @@ console.log ('dataParser()', data);
 
 
   const dataFormatter = (data) => {
-    console.log ('dataFormatter()', data);
-
     try {
-      const values = json.map(v => {
+      const values = data.map(v => {
         return [v.email, v.name, v.phone];
       });
-
       return [['Email', 'Name', 'Phone'], ...values];
     } catch (e) {
       //  Mapping error, some other error
-
     }
-  }
 
+  }
 
 
   useEffect(() => {
@@ -50,12 +43,11 @@ console.log ('dataParser()', data);
   //    token: "yJK-1kzbodLxjGQD_8rDMQ",
       token: "7yDxKTCDoT4hTiB9-27c8w",
 
-
       data: {
         name: "nameFirst",
         email: "internetEmail",
         phone: "phoneHome",
-        _repeat: 300
+        _repeat: 3
       }
     };
 
@@ -67,6 +59,7 @@ console.log ('dataParser()', data);
 
 
     }).then(function(resp) {
+      console.log ("onfulfilled", resp);
       setJSON(resp.data);
     });
 
@@ -85,7 +78,7 @@ console.log ('dataParser()', data);
 export default HotJSON;
 
 
-// Errors stuff
+// Useful Errors stuff
 
 /*    try {
       eval('hoo bar');
