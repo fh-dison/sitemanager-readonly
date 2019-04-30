@@ -1,5 +1,9 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+If you get an error on load, it probably means the token used for app.fakejson.com 
+to get server data has reached its daily limit.
+
+
 ### src/HotJSON.js 
 
 Example pure functional component using React Hooks useState() and useEffect().  Loads JSON data from server.
