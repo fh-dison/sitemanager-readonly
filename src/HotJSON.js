@@ -15,25 +15,28 @@ function HotJSON() {
   // Prototype data handler for server input data
   //  Can use nested try/catch etc for advanced error handling
   //  Ex:  API data can't be parsed properly
-  const dataFormatter = (data, headers) => {
-    let result = '';
-
+  const dataParser = (data, headers) => {
     try {
-      const json = JSON.parse(data);
+      return JSON.parse(data);
 
-      const values = json.map(v => {
-        return [v.email, v.name, v.phone];
-      });
-
-      return [['Email', 'Name', 'Phone'], ...values];
     } catch (e) {
       // SyntaxError, Mapping error, some other error
      if (e instanceof SyntaxError) {
        // Was a JSON.parse error
      }
     }
+  }
 
 
+  const dataFormatter = (data) => {
+    try {
+      const values = data.map(v => {
+        return [v.email, v.name, v.phone];
+      });
+      return [['Email', 'Name', 'Phone'], ...values];
+    } catch (e) {
+      //  Mapping error, some other error
+    }
 
   }
 
@@ -41,14 +44,18 @@ function HotJSON() {
   useEffect(() => {
 
     const instructions = {
+<<<<<<< HEAD
       //token: "yJK-1kzbodLxjGQD_8rDMQ",
+=======
+  //    token: "yJK-1kzbodLxjGQD_8rDMQ",
+>>>>>>> composition
       token: "7yDxKTCDoT4hTiB9-27c8w",
 
       data: {
         name: "nameFirst",
         email: "internetEmail",
         phone: "phoneHome",
-        _repeat: 300
+        _repeat: 3
       }
     };
 
@@ -56,10 +63,11 @@ function HotJSON() {
       method: "post",
       url: "https://app.fakejson.com/q",
       data: instructions,
-      transformResponse: [dataFormatter],
+      transformResponse: [dataParser, dataFormatter],
 
 
     }).then(function(resp) {
+      console.log ("onfulfilled", resp);
       setJSON(resp.data);
     });
 
@@ -78,7 +86,7 @@ function HotJSON() {
 export default HotJSON;
 
 
-// Errors stuff
+// Useful Errors stuff
 
 /*    try {
       eval('hoo bar');
