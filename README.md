@@ -1,5 +1,17 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+##src/HotJSON.js 
+
+Example pure functional component that uses React Hooks useState() and useEffect().  Loads JSON data from server.
+                   
+
+##src/DataTools.js 
+
+Functions to process input data.  Supports functional composition in axios.transformResponse()
+
+
+
+
 ## Available Scripts
 
 In the project directory, you can run:
