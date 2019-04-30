@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { HotTable } from '@handsontable/react';
 import axios from 'axios';
+import dataTools from 'DataTools';
 
 // React 16.8 Functional component with hooks
 function HotJSON() {
@@ -8,47 +9,12 @@ function HotJSON() {
   // json could be any kind of data from the server
   const [json, setJSON] = useState({});
 
- // const [recordQueue, setRecordQueue] = useState({});
-
-
-
-  // Prototype data handler for server input data
-  //  Can use nested try/catch etc for advanced error handling
-  //  Ex:  API data can't be parsed properly
-  const dataParser = (data, headers) => {
-    try {
-      return JSON.parse(data);
-
-    } catch (e) {
-      // SyntaxError, Mapping error, some other error
-     if (e instanceof SyntaxError) {
-       // Was a JSON.parse error
-     }
-    }
-  }
-
-
-  const dataFormatter = (data) => {
-    try {
-      const values = data.map(v => {
-        return [v.email, v.name, v.phone];
-      });
-      return [['Email', 'Name', 'Phone'], ...values];
-    } catch (e) {
-      //  Mapping error, some other error
-    }
-
-  }
-
 
   useEffect(() => {
 
-    const instructions = {
-<<<<<<< HEAD
+    const requestDetails = {
+
       //token: "yJK-1kzbodLxjGQD_8rDMQ",
-=======
-  //    token: "yJK-1kzbodLxjGQD_8rDMQ",
->>>>>>> composition
       token: "7yDxKTCDoT4hTiB9-27c8w",
 
       data: {
@@ -62,10 +28,8 @@ function HotJSON() {
     axios({
       method: "post",
       url: "https://app.fakejson.com/q",
-      data: instructions,
-      transformResponse: [dataParser, dataFormatter],
-
-
+      data: requestDetails,
+      transformResponse: [dataTools.dataParser, dataTools.dataFormatter],
     }).then(function(resp) {
       console.log ("onfulfilled", resp);
       setJSON(resp.data);
@@ -85,17 +49,3 @@ function HotJSON() {
 
 export default HotJSON;
 
-
-// Useful Errors stuff
-
-/*    try {
-      eval('hoo bar');
-    } catch (e) {
-      console.log(e instanceof SyntaxError); // true
-      console.log(e.message);                // "missing ; before statement"
-      console.log(e.name);                   // "SyntaxError"
-      console.log(e.fileName);               // "Scratchpad/1"
-      console.log(e.lineNumber);             // 1
-      console.log(e.columnNumber);           // 4
-      console.log(e.stack);                  // "@Scratchpad/1:2:3\n"
-    }*/

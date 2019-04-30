@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from './logo.svg';
+//import logo from './logo.svg';
 import './App.css';
 import HotDemo from './HotDemo';
 import HotJSON from './HotJSON';
@@ -11,21 +11,7 @@ function App() {
   return (
     <React.Fragment>
     <div className="App">
-{/*      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-        </a>
-      </header>*/}
       -- HandsonTable Demo --
-
     </div>
     <HotDemo/>
     <br/>
