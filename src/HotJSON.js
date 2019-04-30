@@ -8,6 +8,10 @@ function HotJSON() {
   // json could be any kind of data from the server
   const [json, setJSON] = useState({});
 
+ // const [recordQueue, setRecordQueue] = useState({});
+
+
+
   // Prototype data handler for server input data
   //  Can use nested try/catch etc for advanced error handling
   //  Ex:  API data can't be parsed properly
@@ -37,7 +41,9 @@ function HotJSON() {
   useEffect(() => {
 
     const instructions = {
-      token: "yJK-1kzbodLxjGQD_8rDMQ",
+      //token: "yJK-1kzbodLxjGQD_8rDMQ",
+      token: "7yDxKTCDoT4hTiB9-27c8w",
+
       data: {
         name: "nameFirst",
         email: "internetEmail",
@@ -62,7 +68,7 @@ function HotJSON() {
 
   return (
     <React.Fragment>
-      HotJSON with server data
+      HotJSON with server data --
       <HotTable data={json} colHeaders={true} rowHeaders={true} width="600" height="300" licenseKey={'non-commercial-and-evaluation'}/>
     </React.Fragment>
 
