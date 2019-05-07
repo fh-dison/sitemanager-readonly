@@ -12,11 +12,17 @@ function App() {
     <React.Fragment>
     <div className="App">
       -- HandsonTable Demo --
-    </div>
     <HotDemo/>
     <br/>
+    <button onClick={e=>{
+      console.log ("Clicked")   
+      
+      }} >Click to remove this component</button>
+    <br/>
     <HotJSON/>
+    </div>
     </React.Fragment>
+    
   );
 }
 

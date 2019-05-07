@@ -44,7 +44,7 @@ function HotJSON() {
 
   return (
     <React.Fragment>
-      HotJSON with server data --
+      -- HotJSON Component with server data --
       <HotTable data={json} colHeaders={true} rowHeaders={true} width="600" height="300" licenseKey={'non-commercial-and-evaluation'}/>
     </React.Fragment>
 
