@@ -36,7 +36,7 @@ function HotJSON() {
     });
 
     return (params) => {
-      console.log ("Doing component cleanup, unsubscribing, remove event listeners, etc.")
+      console.log ("Doing HotJSON cleanup, unsubscribing, remove event listeners, etc.")
     }
 
   }, []);

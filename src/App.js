@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+
 //import logo from './logo.svg';
 import './App.css';
 import HotDemo from './HotDemo';
@@ -8,6 +9,8 @@ import 'handsontable/dist/handsontable.full.css';
 
 
 function App() {
+  const [showHotJSON, setShowHotJSON] = useState(true);
+
   return (
     <React.Fragment>
     <div className="App">
@@ -15,11 +18,12 @@ function App() {
     <HotDemo/>
     <br/>
     <button onClick={e=>{
-      console.log ("Clicked")   
-      
-      }} >Click to remove this component</button>
+   //   console.log ("Toggling showHotJSON from ", showHotJSON, " to ", ! showHotJSON); 
+      setShowHotJSON(! showHotJSON);  
+      }} >Click to unmount [show/hide] component</button>
     <br/>
-    <HotJSON/>
+    {showHotJSON && <HotJSON/>}
+
     </div>
     </React.Fragment>
     
