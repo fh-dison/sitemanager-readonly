@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { HotTable } from '@handsontable/react';
 import axios from 'axios';
-import dataTools from 'DataTools';
+import {dataParser, dataFormatter} from 'DataTools';
 
 // React 16.8 Functional component with hooks
 function HotJSON() {
@@ -29,11 +29,15 @@ function HotJSON() {
       method: "post",
       url: "https://app.fakejson.com/q",
       data: requestDetails,
-      transformResponse: [dataTools.dataParser, dataTools.dataFormatter],
+      transformResponse: [dataParser, dataFormatter],
     }).then(function(resp) {
       console.log ("onfulfilled", resp);
       setJSON(resp.data);
     });
+
+    return (params) => {
+      console.log ("Doing component cleanup, unsubscribing, remove event listeners, etc.")
+    }
 
   }, []);
 

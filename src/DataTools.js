@@ -1,16 +1,15 @@
-
-class DataTools {
+ 
 
 // Prototype data handler for server input data
 //  Can use nested try/catch etc for advanced error handling
 //  Ex:  API data can't be parsed properly
 
-  dataParser  (data, headers) {
+  export const dataParser = (data, headers) => {
     try {
       return JSON.parse(data);
 
     } catch (e) {
-      // SyntaxError, Mapping error, some other error
+      // SyntaxError
       if (e instanceof SyntaxError) {
         // Was a JSON.parse error
       }
@@ -18,7 +17,7 @@ class DataTools {
   }
 
 
-  dataFormatter (data) {
+  export const dataFormatter = (data) => {
     try {
       const values = data.map(v => {
         return [v.email, v.name, v.phone];
@@ -30,6 +29,6 @@ class DataTools {
 
   }
 
-}
+ 
 
-export default (new DataTools);
+ 
