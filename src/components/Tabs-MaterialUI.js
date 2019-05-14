@@ -5,6 +5,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
+import { TextField } from '@material-ui/core';
 
 function TabContainer(props) {
   return (
@@ -46,11 +47,13 @@ class SimpleTabs extends React.Component {
             <Tab label="Fischer Sections" />
             <Tab label="Legal Sections" />
             <Tab label="Sites" />
-
           </Tabs>
         </AppBar>
+        {/* Filters <TextField type="input"/> */}
+
+
         {value === 0 && <TabContainer>{this.props.Communities}</TabContainer>}
-        {value === 1 && <TabContainer>Fischer Sections Grid View here</TabContainer>}
+        {value === 1 && <TabContainer>{this.props.FischerSections}</TabContainer>}
         {value === 2 && <TabContainer>Legal Sections Grid View here</TabContainer>}
         {value === 3 && <TabContainer>Sites Grid View here<br/><br/></TabContainer>}
 

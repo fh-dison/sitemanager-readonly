@@ -1,5 +1,4 @@
 import React from 'react';
-//import ReactDOM from 'react-dom';
 import { HotTable } from '@handsontable/react';
 
  class HotDemo extends React.Component {

@@ -5,7 +5,7 @@ import './App.css';
 // import HotDemo from './HotDemo';
 // import HotJSON from './HotJSON';
 
-//import DataGridDemo from './components/DataGridDemo';
+ import DataGridDemo from './components/DataGridDemo';
 
 import UlDemo from './components/UlDemo';
 import TabsMaterialUI from './components/Tabs-MaterialUI';
@@ -20,14 +20,14 @@ function App() {
 
   return (
     <React.Fragment>
-      <TabsMaterialUI Communities={<UlDemo/>}/>
+      <TabsMaterialUI Communities={<UlDemo/>} FischerSections={<DataGridDemo/>}/>
     <div className="App">
     {/* <UlDemo/> */}
     {/* <DataGridDemo/> */}
  
     <br/>
 
-    
+
     {/*  <button onClick={e=>{
    //   console.log ("Toggling showHotJSON from ", showHotJSON, " to ", ! showHotJSON); 
       setShowHotJSON(! showHotJSON);  
