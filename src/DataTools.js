@@ -33,5 +33,3 @@ export const testSquare = (val) => {
   return val * val;
 }
 
-
- 
