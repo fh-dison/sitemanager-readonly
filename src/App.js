@@ -11,8 +11,9 @@ import UlDemo from './components/UlDemo';
 import TabsMaterialUI from './components/Tabs-MaterialUI';
 
 //import DataGridDemo from './components/DataGridDemo';
+import { TextField } from '@material-ui/core';
 
-import 'handsontable/dist/handsontable.full.css';
+//import 'handsontable/dist/handsontable.full.css';
 
 
 function App() {
@@ -20,7 +21,10 @@ function App() {
 
   return (
     <React.Fragment>
+    <span style={{ float: 'left'}} >
       <TabsMaterialUI Communities={<UlDemo/>} FischerSections={<DataGridDemo/>}/>
+
+      </span>
     <div className="App">
     {/* <UlDemo/> */}
     {/* <DataGridDemo/> */}

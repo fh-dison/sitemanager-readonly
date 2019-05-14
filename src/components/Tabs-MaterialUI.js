@@ -41,15 +41,15 @@ class SimpleTabs extends React.Component {
 
     return (
       <div className={classes.root}>
-        <AppBar position="static">
-          <Tabs value={value} onChange={this.handleChange}>
+        <AppBar position="static" variant="fullWidth">
+          <Tabs value={value} onChange={this.handleChange} >
             <Tab label="Communities" />
             <Tab label="Fischer Sections" />
             <Tab label="Legal Sections" />
             <Tab label="Sites" />
           </Tabs>
         </AppBar>
-        {/* Filters <TextField type="input"/> */}
+        Filter <TextField type="input"/>  
 
 
         {value === 0 && <TabContainer>{this.props.Communities}</TabContainer>}
