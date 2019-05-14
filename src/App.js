@@ -20,18 +20,20 @@ function App() {
 
   return (
     <React.Fragment>
-      <TabsMaterialUI/>
+      <TabsMaterialUI Communities={<UlDemo/>}/>
     <div className="App">
-    <UlDemo/>
+    {/* <UlDemo/> */}
     {/* <DataGridDemo/> */}
  
     <br/>
-    <button onClick={e=>{
+
+    
+    {/*  <button onClick={e=>{
    //   console.log ("Toggling showHotJSON from ", showHotJSON, " to ", ! showHotJSON); 
       setShowHotJSON(! showHotJSON);  
       }} >Click to unmount [show/hide] component</button>
     <br/>
-    {/* {showHotJSON && <HotJSON/>} */}
+   {showHotJSON && <HotJSON/>} */}
 
     </div>
     </React.Fragment>
