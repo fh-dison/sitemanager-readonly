@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 
 //import logo from './logo.svg';
 import './App.css';
-import HotDemo from './HotDemo';
-import HotJSON from './HotJSON';
+// import HotDemo from './HotDemo';
+// import HotJSON from './HotJSON';
+
+import DataGridDemo from './DataGridDemo';
+
+import UlDemo from './UlDemo';
 
 import 'handsontable/dist/handsontable.full.css';
 
@@ -14,15 +18,14 @@ function App() {
   return (
     <React.Fragment>
     <div className="App">
-      -- HandsonTable Demo --
-    <HotDemo/>
+    <UlDemo/>
     <br/>
     <button onClick={e=>{
    //   console.log ("Toggling showHotJSON from ", showHotJSON, " to ", ! showHotJSON); 
       setShowHotJSON(! showHotJSON);  
       }} >Click to unmount [show/hide] component</button>
     <br/>
-    {showHotJSON && <HotJSON/>}
+    {/* {showHotJSON && <HotJSON/>} */}
 
     </div>
     </React.Fragment>

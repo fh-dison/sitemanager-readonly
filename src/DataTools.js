@@ -26,9 +26,12 @@ export const dataFormatter = (data) => {
   } catch (e) {
     //  Mapping error, some other error
   }
-
 }
 
- 
+// Only for setting up testing 
+export const testSquare = (val) => {
+  return val * val;
+}
+
 
  
