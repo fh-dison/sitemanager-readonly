@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
 
-//import logo from './logo.svg';
 import './App.css';
-// import HotDemo from './HotDemo';
-// import HotJSON from './HotJSON';
-
- import DataGridDemo from './components/DataGridDemo';
-
+import DataGridDemo from './components/DataGridDemo';
 import UlDemo from './components/UlDemo';
 import TabsMaterialUI from './components/Tabs-MaterialUI';
 
-//import DataGridDemo from './components/DataGridDemo';
-import { TextField } from '@material-ui/core';
 
-//import 'handsontable/dist/handsontable.full.css';
+// Advanced table display with builtin filtering 
+// https://github.com/gregnb/mui-datatables
+// Problem with Material UI Official tables is too much setup code
+// https://material-ui.com/demos/tables/
 
 
 function App() {
@@ -21,7 +17,7 @@ function App() {
 
   return (
     <React.Fragment>
-    <span style={{ float: 'left'}} >
+    <span style={{ float: 'center'}} >
       <TabsMaterialUI Communities={<UlDemo/>} FischerSections={<DataGridDemo/>}/>
 
       </span>
@@ -47,3 +43,9 @@ function App() {
 
 export default App;
 //  Possible alternative fake JSON https://reqres.in/.
+
+//import logo from './logo.svg';
+// import HotDemo from './HotDemo';
+// import HotJSON from './HotJSON';
+//import { TextField } from '@material-ui/core';
+//import 'handsontable/dist/handsontable.full.css';
