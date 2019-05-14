@@ -5,9 +5,9 @@ import './App.css';
 // import HotDemo from './HotDemo';
 // import HotJSON from './HotJSON';
 
-import DataGridDemo from './DataGridDemo';
+//import DataGridDemo from './components/DataGridDemo';
 
-import UlDemo from './UlDemo';
+import UlDemo from './components/UlDemo';
 
 import 'handsontable/dist/handsontable.full.css';
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { HotTable } from '@handsontable/react';
 import axios from 'axios';
-import {dataParser, dataFormatter} from 'DataTools';
+import {dataParser, dataFormatter} from 'lib/DataTools';
 
 // React 16.8 Functional component with hooks
 function HotJSON() {
