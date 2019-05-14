@@ -8,6 +8,7 @@ import './App.css';
 //import DataGridDemo from './components/DataGridDemo';
 
 import UlDemo from './components/UlDemo';
+import TabsMaterialUI from './components/Tabs-MaterialUI';
 
 //import DataGridDemo from './components/DataGridDemo';
 
@@ -19,6 +20,7 @@ function App() {
 
   return (
     <React.Fragment>
+      <TabsMaterialUI/>
     <div className="App">
     <UlDemo/>
     {/* <DataGridDemo/> */}
