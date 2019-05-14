@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import './App.css';
 import DataGridDemo from './components/DataGridDemo';
 import UlDemo from './components/UlDemo';
+import Communities from './components/Communities';
 import TabsMaterialUI from './components/Tabs-MaterialUI';
 
 
@@ -18,7 +19,11 @@ function App() {
   return (
     <React.Fragment>
     <span style={{ float: 'center'}} >
-      <TabsMaterialUI Communities={<UlDemo/>} FischerSections={<DataGridDemo/>}/>
+      <TabsMaterialUI 
+      Communities={<Communities/>} 
+      FischerSections={<DataGridDemo/>}
+      LegalSections={<UlDemo/>}
+      />
 
       </span>
     <div className="App">

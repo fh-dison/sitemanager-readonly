@@ -23,7 +23,7 @@ import ReactDataGrid from 'react-data-grid';
   render() {
     return (
     <React.Fragment>
-    -- UlGrid Demo --
+    -- Ul  Demo --
 
     <ul style={{listStyle: 'none'}}>
         {this.rows.map((e, i)=> 
