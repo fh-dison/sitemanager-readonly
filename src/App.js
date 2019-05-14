@@ -9,6 +9,8 @@ import './App.css';
 
 import UlDemo from './components/UlDemo';
 
+//import DataGridDemo from './components/DataGridDemo';
+
 import 'handsontable/dist/handsontable.full.css';
 
 
@@ -19,6 +21,7 @@ function App() {
     <React.Fragment>
     <div className="App">
     <UlDemo/>
+    {/* <DataGridDemo/> */}
  
     <br/>
     <button onClick={e=>{
