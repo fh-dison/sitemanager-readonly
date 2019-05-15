@@ -55,7 +55,7 @@ class SimpleTabs extends React.Component {
         {value === 0 && <TabContainer>{this.props.Communities}</TabContainer>}
         {value === 1 && <TabContainer>{this.props.FischerSections}</TabContainer>}
         {value === 2 && <TabContainer>{this.props.LegalSections}</TabContainer>}
-        {value === 3 && <TabContainer>Sites Grid View here<br/><br/></TabContainer>}
+        {value === 3 && <TabContainer>{this.props.Sites}<br/><br/></TabContainer>}
 
       </div>
 

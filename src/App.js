@@ -4,6 +4,8 @@ import './App.css';
 import FischerSections from './components/FischerSections';
 import LegalSections from './components/LegalSections';
 
+import Sites from './components/Sites';
+
 //import UlDemo from './components/UlDemo';
 import Communities from './components/Communities';
 import TabsMaterialUI from './components/Tabs-MaterialUI';
@@ -27,6 +29,8 @@ function App() {
       Communities={<Communities/>} 
       FischerSections={<FischerSections/>}
       LegalSections={<LegalSections/>}
+      Sites={<Sites/>}
+
       />
 
       </span>
