@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 
 import './App.css';
-import DataGridDemo from './components/DataGridDemo';
-import UlDemo from './components/UlDemo';
+import FischerSections from './components/FischerSections';
+import LegalSections from './components/LegalSections';
+
+//import UlDemo from './components/UlDemo';
 import Communities from './components/Communities';
 import TabsMaterialUI from './components/Tabs-MaterialUI';
+import { italic } from 'ansi-colors';
 
 
 // Advanced table display with builtin filtering 
@@ -18,11 +21,12 @@ function App() {
 
   return (
     <React.Fragment>
+    <h3 style={{display: 'inline'}}>  Land Ops Home </h3>    <italic>View Mode</italic>
     <span style={{ float: 'center'}} >
       <TabsMaterialUI 
       Communities={<Communities/>} 
-      FischerSections={<DataGridDemo/>}
-      LegalSections={<UlDemo/>}
+      FischerSections={<FischerSections/>}
+      LegalSections={<LegalSections/>}
       />
 
       </span>

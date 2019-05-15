@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import {SortingState, PagingState, IntegratedPaging, IntegratedSorting} from '@devexpress/dx-react-grid';
 import { Grid, Table, PagingPanel, TableHeaderRow } from '@devexpress/dx-react-grid-material-ui';
 
-import {communitiesRows, communitiesColumns} from 'mockdata/communitiesData';
+import {legalSectionsRows, legalSectionsColumns} from 'mockdata/legalSectionsData';
 
-const Communities = () => {
+const LegalSections = () => {
     // TODO: Move to React Context 
-    const rows = communitiesRows;
-    const columns = communitiesColumns;
+    const rows = legalSectionsRows;
+    const columns = legalSectionsColumns;
 
 return (
 
@@ -18,12 +18,12 @@ return (
     rows={rows}
     >
     <SortingState
-            defaultSorting={[{ columnName: 'community_code', direction: 'asc' }]}
-          />
-                    <PagingState />
+        defaultSorting={[{ columnName: 'legal_section_code', direction: 'asc' }]}
+    />
+    <PagingState />
 
-          <IntegratedSorting />  
-          <IntegratedPaging />
+    <IntegratedSorting />  
+    <IntegratedPaging />
 
     <Table />
     <TableHeaderRow showSortingControls />
@@ -35,4 +35,4 @@ return (
   </React.Fragment>
 )};
 
-export default Communities;
+export default LegalSections;
