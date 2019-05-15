@@ -49,9 +49,14 @@ import {sitesRows, sitesColumns} from 'mockdata/sitesData';
     -- Ul  Demo --
 
     <ul style={{listStyle: 'none'}}>
-        {/* {this.columns.map ((e, i) => {
-            return  <li key={i}>{e.div} {e.community_code} {e.community_name} {e.budget_neighborhood}</li>
-        })} */}
+    
+        <li>
+        {this.columns.map ((e, i) => {
+            return `${e.title}  `
+        })}  
+
+            </li>
+
         {this.rows.map((e, i)=> 
         <li key={i}>{e.div} {e.site} {e.site_number} {e.job_number} {e.fischer_section} {e.legal_section} {e.purchase_date}
         {e.check_number} {e.is_available} {e.pricing_group} {e.lopt_record_id} {e.site_cost} {e.site_premium} {e.extra_construction}
