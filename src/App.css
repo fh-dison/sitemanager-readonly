@@ -31,3 +31,7 @@
     transform: rotate(360deg);
   }
 }
+
+/*  Tentative for ul component  */
+li { background: white; }
+li:nth-child(odd) { background: lightgray; }
