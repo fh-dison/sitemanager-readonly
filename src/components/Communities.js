@@ -1,13 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {SortingState, PagingState, IntegratedPaging, IntegratedSorting} from '@devexpress/dx-react-grid';
 import { Grid, Table, PagingPanel, TableHeaderRow } from '@devexpress/dx-react-grid-material-ui';
 
 import {communitiesRows, communitiesColumns} from 'mockdata/communitiesData';
 
+import AppContext from '../context/app-context';
+
+
 const Communities = () => {
-    // TODO: Move to React Context 
+  const context = useContext(AppContext);
+console.info ("Communities rendering, context is ", context);
+
+  // TODO: Move to React Context 
     const rows = communitiesRows;
     const columns = communitiesColumns;
+
+
 
 return (
 
@@ -18,12 +26,12 @@ return (
     rows={rows}
     >
     <SortingState
-            defaultSorting={[{ columnName: 'community_code', direction: 'asc' }]}
-          />
-                    <PagingState />
+      defaultSorting={[{ columnName: 'community_code', direction: 'asc' }]}
+    />
+    <PagingState />
 
-          <IntegratedSorting />  
-          <IntegratedPaging />
+    <IntegratedSorting />  
+    <IntegratedPaging />
 
     <Table />
     <TableHeaderRow showSortingControls />
@@ -32,6 +40,8 @@ return (
   </Grid>
   <br/>
     Total {rows.length}
+    <br/>
+    Filter {context.omniboxFilter}
   </React.Fragment>
 )};
 
