@@ -20,7 +20,7 @@ import GlobalState from './context/GlobalState';
 
 
 function App() {
-  const [showHotJSON, setShowHotJSON] = useState(true);
+ // const [showHotJSON, setShowHotJSON] = useState(true);
 
   return (
     <GlobalState>
@@ -31,24 +31,13 @@ function App() {
       FischerSections={<FischerSections/>}
       LegalSections={<LegalSections/>}
       Sites={<Sites/>}
-
       />
 
-      </span>
+    </span>
     <div className="App">
-    {/* <UlDemo/> */}
-    {/* <DataGridDemo/> */}
- 
+
     <br/>
-
-
-    {/*  <button onClick={e=>{
-   //   console.log ("Toggling showHotJSON from ", showHotJSON, " to ", ! showHotJSON); 
-      setShowHotJSON(! showHotJSON);  
-      }} >Click to unmount [show/hide] component</button>
-    <br/>
-   {showHotJSON && <HotJSON/>} */}
-
+     
     </div>
     </GlobalState>
     
@@ -56,10 +45,7 @@ function App() {
 }
 
 export default App;
+
 //  Possible alternative fake JSON https://reqres.in/.
 
-//import logo from './logo.svg';
-// import HotDemo from './HotDemo';
-// import HotJSON from './HotJSON';
-//import { TextField } from '@material-ui/core';
-//import 'handsontable/dist/handsontable.full.css';
+ 

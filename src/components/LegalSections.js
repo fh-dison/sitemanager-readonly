@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {SortingState, PagingState, IntegratedPaging, IntegratedSorting} from '@devexpress/dx-react-grid';
 import { Grid, Table, PagingPanel, TableHeaderRow } from '@devexpress/dx-react-grid-material-ui';
-
 import {legalSectionsRows, legalSectionsColumns} from 'mockdata/legalSectionsData';
+import AppContext from '../context/app-context';
 
 const LegalSections = () => {
-    // TODO: Move to React Context 
-    const rows = legalSectionsRows;
-    const columns = legalSectionsColumns;
+  const context = useContext(AppContext);
+
+  // TODO: Move to React Context 
+  const rows = legalSectionsRows;
+  const columns = legalSectionsColumns;
+
+  console.info ("Legal Sections (re)-rendering, filter is ", context.omniboxFilter);
 
 return (
 

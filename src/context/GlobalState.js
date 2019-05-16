@@ -1,21 +1,16 @@
 import React, {  useReducer } from 'react';
 import AppContext from './app-context';
-import {  UPDATE_OMNIBOX_FILTER} from './actions';
+import {UPDATE_OMNIBOX_FILTER} from './actions';
 import appReducer from './reducers';
 
 const GlobalState = props => {
  
-
-  const omniboxFilter = '';
-
-  const [appState, dispatch] = useReducer(appReducer, { omniboxFilter: 'initial' });
+  const [appState, dispatch] = useReducer(appReducer, { omniboxFilter: 'none' });
 
   const updateOmniboxFilter = omnibox => {
     dispatch({ type: UPDATE_OMNIBOX_FILTER, omnibox: omnibox });
   }
 
- 
-//console.info('GlobalState - updateOmniboxFilter', updateOmniboxFilter);
   return (
     <AppContext.Provider
       value={{
@@ -23,7 +18,7 @@ const GlobalState = props => {
         updateOmniboxFilter: updateOmniboxFilter,
       }}
     >
-      {props.children}
+    {props.children}
     </AppContext.Provider>
   );
 };
