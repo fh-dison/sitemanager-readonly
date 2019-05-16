@@ -1,32 +1,33 @@
-import React from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import ReactDataGrid from 'react-data-grid';
 import {fischerSectionsRows,fischerSectionsColumns} from 'mockdata/fischerSectionsData';
+import AppContext from '../context/app-context';
 
- class FischerSections extends React.Component {
-  constructor(props) {
-    super(props);
+ const FischerSections = (props) => {
+  const context = useContext(AppContext);
+
+      const rows = fischerSectionsRows;
+      const columns = fischerSectionsColumns;
+   
+    console.info ("Fischer Sections (re)-rendering, filter is ", context.omniboxFilter);
+
+   
  
-     this.rows = fischerSectionsRows;
-     this.columns = fischerSectionsColumns;
-  }
-
-  render() {
-    
     return (
       <>
            React Data Grid <strong>https://adazzle.github.io/react-data-grid/</strong>
 
       <ReactDataGrid
-      columns={this.columns}
-      rowGetter={i => this.rows[i]}
-      rowsCount={this.rows.length}
+      columns={columns}
+      rowGetter={i => rows[i]}
+      rowsCount={rows.length}
       minHeight={500} 
       />
-          Total {this.rows.length}
+          Total {rows.length}
 
       </>    
     )
     
-}
+ 
 }
 export default FischerSections;

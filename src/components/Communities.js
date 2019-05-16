@@ -7,9 +7,9 @@ import {communitiesRows, communitiesColumns} from 'mockdata/communitiesData';
 import AppContext from '../context/app-context';
 
 
-const Communities = () => {
+const Communities = (props) => {
   const context = useContext(AppContext);
-console.info ("Communities rendering, context is ", context);
+console.info ("Communities (re)-rendering, filter is ", context.omniboxFilter);
 
   // TODO: Move to React Context 
     const rows = communitiesRows;
