@@ -13,7 +13,7 @@ const FischerSections = (props) => {
  
   return (
     <>
-          React Data Grid <strong>https://adazzle.github.io/react-data-grid/</strong>
+    React Data Grid <strong>https://adazzle.github.io/react-data-grid/</strong>
 
     <ReactDataGrid
     columns={columns}

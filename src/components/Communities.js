@@ -5,17 +5,20 @@ import { Grid, Table, PagingPanel, TableHeaderRow } from '@devexpress/dx-react-g
 import {communitiesRows, communitiesColumns} from 'mockdata/communitiesData';
 
 import AppContext from '../context/app-context';
+import Paginator from './Paginator';
+
 
 
 const Communities = (props) => {
   const context = useContext(AppContext);
-console.info ("Communities (re)-rendering, filter is ", context.omniboxFilter);
+  console.info ("Communities (re)-rendering, filter is ", context.omniboxFilter);
 
   // TODO: Move to React Context 
     const rows = communitiesRows;
     const columns = communitiesColumns;
-
-
+    //if context.communitiesPage === -1 request page 0?
+// MVP - useEffect() first time to get store/global context to automatically load page 0  - call context.updateCommunitiesPage(0);
+// or based on some values changing?  Able to test context.communitiesPage
 
 return (
 
@@ -42,6 +45,10 @@ return (
     Total {rows.length}
     <br/>
     Filter {context.omniboxFilter}
+    <br/>
+    Page {context.communitiesPage}
+    <br/>
+    <Paginator context={context}/>
   </React.Fragment>
 )};
 
