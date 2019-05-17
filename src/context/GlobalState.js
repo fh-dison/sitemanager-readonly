@@ -12,10 +12,10 @@ const GlobalState = props => {
   const [appState, dispatch] = useReducer(appReducer, { 
     omniboxFilter: 'none',
     communitiesPage: 0,
-    communitiesData: [{}, {}],
+    communitiesData: [],
   });
 
-  if (appState.communitiesData.length <= 2) {
+  if (appState.communitiesData.length === 0) {
    
     axios.defaults.headers.common = {'Authorization': `Bearer ${window.sessionStorage.accessToken}`}
 

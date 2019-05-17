@@ -12,6 +12,22 @@ import TabsMaterialUI from './components/Tabs-MaterialUI';
 import GlobalState from './context/GlobalState';
 import FakeOAuth from './lib/FakeOauth';
 
+
+/* Where things are 5-17
+ 1.  Ready for official source repo.
+ 2.  Tag master branch head.
+ 3.  Merge add-global-context
+  4.  Fake Oauth.  Need real oAuth.
+
+  Pattern idea for Component:  
+  1.  Get pageno = context->communitiesPageNo
+  2.  Get context->getCommunitiesData(pageno)
+  3.  Global has current pageno, compares and if not equal, sends endpoint req.
+  4.  Stores data using dispatch.
+  5.  Todo:  Where and how of filtering tbd.
+
+
+*/
 FakeOAuth();
 //console.info (window.sessionStorage.accessToken);
 
