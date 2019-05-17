@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
+
+//import React, { useState } from 'react';
 
 import './App.css';
 import FischerSections from './components/FischerSections';
@@ -11,7 +13,9 @@ import GlobalState from './context/GlobalState';
 import FakeOAuth from './lib/FakeOauth';
 
 FakeOAuth();
-console.info (window.sessionStorage.accessToken);
+//console.info (window.sessionStorage.accessToken);
+
+
 
 //import { italic } from 'ansi-colors';
 

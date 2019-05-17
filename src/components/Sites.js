@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { /* useState, */  useContext, /* useEffect */ } from 'react';
 import {sitesRows, sitesColumns} from 'mockdata/sitesData';
 import AppContext from '../context/app-context';
 

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { /* useState, */  useContext, /* useEffect */ } from 'react';
 import ReactDataGrid from 'react-data-grid';
 import {fischerSectionsRows,fischerSectionsColumns} from 'mockdata/fischerSectionsData';
 import AppContext from '../context/app-context';

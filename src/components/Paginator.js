@@ -1,8 +1,7 @@
-import React, { useState, useContext, useEffect } from 'react';
-//import AppContext from '../context/app-context';
+import React from 'react';
 
 import { TextField } from '@material-ui/core';
-import { isContext } from 'vm';
+//import { isContext } from 'vm';
 
 const Paginator = (props) => {
   //const context = useContext(AppContext);

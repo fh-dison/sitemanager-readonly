@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { /* useState, */  useContext, /* useEffect */ } from 'react';
 import {SortingState, PagingState, IntegratedPaging, IntegratedSorting} from '@devexpress/dx-react-grid';
 import { Grid, Table, PagingPanel, TableHeaderRow } from '@devexpress/dx-react-grid-material-ui';
 
@@ -24,6 +24,7 @@ return (
 
  <React.Fragment>
        Dev Extreme React Grid <strong>https://devexpress.github.io/devextreme-reactive/react/grid/ </strong>
+      <span onClick={()=>{console.info(context.communitiesData); debugger;}}>Debug</span> 
   <Grid
     columns={columns}
     rows={rows}
