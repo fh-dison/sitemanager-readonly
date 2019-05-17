@@ -8,7 +8,10 @@ import Communities from './components/Communities';
 import TabsMaterialUI from './components/Tabs-MaterialUI';
 
 import GlobalState from './context/GlobalState';
+import FakeOAuth from './lib/FakeOauth';
 
+FakeOAuth();
+console.info (window.sessionStorage.accessToken);
 
 //import { italic } from 'ansi-colors';
 
