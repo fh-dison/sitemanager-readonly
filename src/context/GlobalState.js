@@ -33,10 +33,10 @@ const GlobalState = props => {
     dispatch({ type: UPDATE_COMMUNITIES_PAGE, page: page });
   }
 
-  const fetchCurrentCommunitiesData = () => {
+  const syncCurrentCommunitiesPage = () => {
 
 
-    console.info ('fetchCurrentCommunitiesData()', appState.communitiesPage, appState.lastFetchedCommunitiesPage);
+    console.info ('syncCurrentCommunitiesPage()', appState.communitiesPage, appState.lastFetchedCommunitiesPage);
 
 
     if (appState.lastFetchedPage !== appState.communitiesPage) {
@@ -54,9 +54,6 @@ const GlobalState = props => {
         dispatch({ type: UPDATE_LAST_FETCHED_COMMUNITIES_PAGE, data: appState.communitiesPage});
       })
     }
-
-    console.info('getCurrentCommunitiesData is returning', appState.communitiesData);
-    return appState.communitiesData;
   }
 
   return (
@@ -66,7 +63,7 @@ const GlobalState = props => {
         updateOmniboxFilter: updateOmniboxFilter,
         communitiesPage: appState.communitiesPage,
         updateCommunitiesPage: updateCommunitiesPage,
-        fetchCurrentCommunitiesData: fetchCurrentCommunitiesData,
+        syncCurrentCommunitiesPage: syncCurrentCommunitiesPage,
         communitiesData: appState.communitiesData,
         lastFetchedCommunitiesPage: appState.lastFetchedCommunitiesPage,
       }}

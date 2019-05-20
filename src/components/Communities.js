@@ -16,8 +16,7 @@ const Communities = (props) => {
 
   // Use lazy loading of data.  On useEffect(), request Store to fetch current page of data
   useEffect(() => {
-    // This could also be called syncCurrentCommunitiesData()
-     context.fetchCurrentCommunitiesData();
+     context.syncCurrentCommunitiesPage();
   }, [context.communitiesPage]);
 
 
@@ -25,7 +24,12 @@ const Communities = (props) => {
     const rows = communitiesRows;
     const columns = communitiesColumns;
 
-    console.info('Communities rendering, communities data is ', context.communitiesData);
+    const info = {
+      page: context.communitiesData.page,
+      data: context.communitiesData.data
+    };
+    console.info ('Communities rendering with ', info);
+ //   console.info('Communities rendering, communities data is ', context.communitiesData);
 
 return (
 

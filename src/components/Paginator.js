@@ -10,6 +10,7 @@ const Paginator = (props) => {
     Goto Page <TextField  type="input"
       onKeyUp={e=>{
       //  props.context.updateOmniboxFilter(e.target.value)  
+      console.clear();
       console.info ("Paginator updating as ", e.target.value);
       props.context.updateCommunitiesPage(e.target.value);
       }}
