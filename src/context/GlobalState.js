@@ -1,8 +1,15 @@
 import React, {  useReducer } from 'react';
 import AppContext from './app-context';
-import {UPDATE_OMNIBOX_FILTER, UPDATE_COMMUNITIES_PAGE, UPDATE_COMMUNITIES_DATA} from './actions';
+import {
+  UPDATE_OMNIBOX_FILTER, 
+  UPDATE_COMMUNITIES_PAGE, 
+  UPDATE_LAST_FETCHED_COMMUNITIES_PAGE,
+  UPDATE_COMMUNITIES_DATA,
+} from './actions';
 import appReducer from './reducers';
 import axios from 'axios';
+
+
 
 // Could be named Store
 const GlobalState = props => {
@@ -11,7 +18,9 @@ const GlobalState = props => {
     omniboxFilter: 'none',
     communitiesPage: 0,
     communitiesData: [],
-    fetchCurrentCommunitiesData: () =>{}
+    fetchCurrentCommunitiesData: () =>{},
+    lastFetchedCommunitiesPage: -1,
+    communitiesFetchIsActive: false,
   });
 
 
@@ -20,42 +29,29 @@ const GlobalState = props => {
   }
 
   const updateCommunitiesPage = page => {
-    //  TODO:  Go to API and fetch selected page, .then(communitiesData = data; dispatch) .catch('Show some error')
+    // Update our page metadata
     dispatch({ type: UPDATE_COMMUNITIES_PAGE, page: page });
-
   }
 
   const fetchCurrentCommunitiesData = () => {
 
-    //  TODO:  Deal with paging 
-    if (appState.communitiesData.length === 0) {
-   
+
+    console.info ('fetchCurrentCommunitiesData()', appState.communitiesPage, appState.lastFetchedCommunitiesPage);
+
+
+    if (appState.lastFetchedPage !== appState.communitiesPage) {
+
       // axios.defaults.headers.common = {'Authorization': `Bearer ${window.sessionStorage.accessToken}`}
       // axios.get('https://rest-staging.fischermgmt.com/api/v3/communities?filters[code][operator]=LIKE&filters[code][value]=AR%&filters[name][operator]=LIKE&filters[name][value]=A%',
       // )
 
-      const requestDetails = {
 
-        //token: "yJK-1kzbodLxjGQD_8rDMQ",
-        token: "7yDxKTCDoT4hTiB9-27c8w",
-  
-        data: {
-          name: "nameFirst",
-          email: "internetEmail",
-          phone: "phoneHome",
-          _repeat: 3
-        }
-      };
-      axios({
-        method: "post",
-        url: "https://app.fakejson.com/q",
-        data: requestDetails,
-    //    transformResponse: [dataParser, dataFormatter],
-      }) 
+      axios.get(`https://reqres.in/api/users?page=${appState.communitiesPage}`)
 
       .then(function (response) {
-        console.info ('getCurrentCommunitiesData() promise resolving with', response.data);
+        console.info ('getCurrentCommunitiesData() promise resolving with', response.data, 'lastFetched set to ', appState.communitiesPage);
         dispatch({ type: UPDATE_COMMUNITIES_DATA, data: response.data});  
+        dispatch({ type: UPDATE_LAST_FETCHED_COMMUNITIES_PAGE, data: appState.communitiesPage});
       })
     }
 
@@ -72,6 +68,7 @@ const GlobalState = props => {
         updateCommunitiesPage: updateCommunitiesPage,
         fetchCurrentCommunitiesData: fetchCurrentCommunitiesData,
         communitiesData: appState.communitiesData,
+        lastFetchedCommunitiesPage: appState.lastFetchedCommunitiesPage,
       }}
     >
     {props.children}

@@ -1,4 +1,4 @@
-import React, { useState,  useContext, useEffect } from 'react';
+import React, { /*useState, */ useContext, useEffect } from 'react';
 import {SortingState, PagingState, IntegratedPaging, IntegratedSorting} from '@devexpress/dx-react-grid';
 import { Grid, Table, PagingPanel, TableHeaderRow } from '@devexpress/dx-react-grid-material-ui';
 
@@ -8,23 +8,22 @@ import AppContext from '../context/app-context';
 import Paginator from './Paginator';
 
 
-
 const Communities = (props) => {
   const context = useContext(AppContext);
 
 //  console.info ("Communities (re)-rendering, filter is ", context.omniboxFilter);
 //  const [data, setData] = useState([]);
 
-  // Use lazy loading of data.  On useEffect()
+  // Use lazy loading of data.  On useEffect(), request Store to fetch current page of data
   useEffect(() => {
+    // This could also be called syncCurrentCommunitiesData()
      context.fetchCurrentCommunitiesData();
-  }, []);
+  }, [context.communitiesPage]);
 
 
   // TODO: Move to React Context 
     const rows = communitiesRows;
     const columns = communitiesColumns;
-
 
     console.info('Communities rendering, communities data is ', context.communitiesData);
 
