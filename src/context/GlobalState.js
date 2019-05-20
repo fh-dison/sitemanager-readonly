@@ -20,21 +20,27 @@ const GlobalState = props => {
     communitiesData: [],
     fetchCurrentCommunitiesData: () =>{},
     lastFetchedCommunitiesPage: -1,
-    communitiesFetchIsActive: false,
   });
 
 
   const updateOmniboxFilter = omnibox => {
     dispatch({ type: UPDATE_OMNIBOX_FILTER, omnibox: omnibox });
   }
-
+    
+  /**
+   * Updates global page metadata for Communities
+   * @param {integer=} page 
+   */
   const updateCommunitiesPage = page => {
-    // Update our page metadata
     dispatch({ type: UPDATE_COMMUNITIES_PAGE, page: page });
   }
 
-  const syncCurrentCommunitiesPage = () => {
 
+  /**
+   * Synchronizes current Communities REST API data to current page (communitiesPage)
+   *
+   */
+  const syncCurrentCommunitiesPage = () => {
 
     console.info ('syncCurrentCommunitiesPage()', appState.communitiesPage, appState.lastFetchedCommunitiesPage);
 

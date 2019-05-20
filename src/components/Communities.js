@@ -11,10 +11,7 @@ import Paginator from './Paginator';
 const Communities = (props) => {
   const context = useContext(AppContext);
 
-//  console.info ("Communities (re)-rendering, filter is ", context.omniboxFilter);
-//  const [data, setData] = useState([]);
-
-  // Use lazy loading of data.  On useEffect(), request Store to fetch current page of data
+  // Use lazy loading of data.  On useEffect(), request Store to sync / fetch current page of data
   useEffect(() => {
      context.syncCurrentCommunitiesPage();
   }, [context.communitiesPage]);
@@ -24,12 +21,11 @@ const Communities = (props) => {
     const rows = communitiesRows;
     const columns = communitiesColumns;
 
-    const info = {
-      page: context.communitiesData.page,
-      data: context.communitiesData.data
-    };
-    console.info ('Communities rendering with ', info);
- //   console.info('Communities rendering, communities data is ', context.communitiesData);
+const info = {
+  page: context.communitiesData.page,
+  data: context.communitiesData.data
+};
+console.info ('Communities rendering with ', info);
 
 return (
 
@@ -65,3 +61,8 @@ return (
 )};
 
 export default Communities;
+
+
+
+//  console.info ("Communities (re)-rendering, filter is ", context.omniboxFilter);
+//  const [data, setData] = useState([]);
