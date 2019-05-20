@@ -1,4 +1,4 @@
-import React, { /* useState, */  useContext, /* useEffect */ } from 'react';
+import React, { useState,  useContext, useEffect } from 'react';
 import {SortingState, PagingState, IntegratedPaging, IntegratedSorting} from '@devexpress/dx-react-grid';
 import { Grid, Table, PagingPanel, TableHeaderRow } from '@devexpress/dx-react-grid-material-ui';
 
@@ -11,14 +11,22 @@ import Paginator from './Paginator';
 
 const Communities = (props) => {
   const context = useContext(AppContext);
-  console.info ("Communities (re)-rendering, filter is ", context.omniboxFilter);
+
+//  console.info ("Communities (re)-rendering, filter is ", context.omniboxFilter);
+//  const [data, setData] = useState([]);
+
+  // Use lazy loading of data.  On useEffect()
+  useEffect(() => {
+     context.fetchCurrentCommunitiesData();
+  }, []);
+
 
   // TODO: Move to React Context 
     const rows = communitiesRows;
     const columns = communitiesColumns;
-    //if context.communitiesPage === -1 request page 0?
-// MVP - useEffect() first time to get store/global context to automatically load page 0  - call context.updateCommunitiesPage(0);
-// or based on some values changing?  Able to test context.communitiesPage
+
+
+    console.info('Communities rendering, communities data is ', context.communitiesData);
 
 return (
 

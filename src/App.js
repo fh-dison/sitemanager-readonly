@@ -22,6 +22,7 @@ import FakeOAuth from './lib/FakeOauth';
   Pattern idea for Component:  
   1.  Get pageno = context->communitiesPageNo
   2.  Get context->getCommunitiesData(pageno)
+  3.  Alternative:  Manage paging in Store, component just calls getCurrentCommunitiesData(), etc
   3.  Global has current pageno, compares and if not equal, sends endpoint req.
   4.  Stores data using dispatch.
   5.  Todo:  Where and how of filtering tbd.
