@@ -5,10 +5,10 @@ import {
   UPDATE_COMMUNITIES_PAGE, 
   UPDATE_LAST_FETCHED_COMMUNITIES_PAGE,
   UPDATE_COMMUNITIES_DATA,
+  SET_ACCESS_TOKEN,
 } from './actions';
 import appReducer from './reducers';
 import axios from 'axios';
-
 
 
 // Could be named Store
@@ -20,7 +20,13 @@ const GlobalState = props => {
     communitiesData: [],
     fetchCurrentCommunitiesData: () =>{},
     lastFetchedCommunitiesPage: -1,
+    accessToken: '',
   });
+
+
+  const setAccessToken = token => {
+    dispatch({ type: SET_ACCESS_TOKEN, data: token });
+  }
 
 
   const updateOmniboxFilter = omnibox => {
@@ -35,22 +41,18 @@ const GlobalState = props => {
     dispatch({ type: UPDATE_COMMUNITIES_PAGE, page: page });
   }
 
-
   /**
-   * Synchronizes current Communities REST API data to current page (communitiesPage)
-   *
+   * Synchronizes current Communities data via REST API to current page (communitiesPage)
    */
   const syncCurrentCommunitiesPage = () => {
 
     console.info ('syncCurrentCommunitiesPage()', appState.communitiesPage, appState.lastFetchedCommunitiesPage);
-
 
     if (appState.lastFetchedPage !== appState.communitiesPage) {
 
       // axios.defaults.headers.common = {'Authorization': `Bearer ${window.sessionStorage.accessToken}`}
       // axios.get('https://rest-staging.fischermgmt.com/api/v3/communities?filters[code][operator]=LIKE&filters[code][value]=AR%&filters[name][operator]=LIKE&filters[name][value]=A%',
       // )
-
 
       axios.get(`https://reqres.in/api/users?page=${appState.communitiesPage}`)
 
@@ -72,6 +74,8 @@ const GlobalState = props => {
         syncCurrentCommunitiesPage: syncCurrentCommunitiesPage,
         communitiesData: appState.communitiesData,
         lastFetchedCommunitiesPage: appState.lastFetchedCommunitiesPage,
+        setAccessToken: setAccessToken,
+        accessToken: appState.accessToken,
       }}
     >
     {props.children}

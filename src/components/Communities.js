@@ -25,7 +25,7 @@ const info = {
   page: context.communitiesData.page,
   data: context.communitiesData.data
 };
-console.info ('Communities rendering with ', info);
+console.info ('Communities rendering with ', info, 'Access Token is', context.accessToken.substring(0, 50) + '...');
 
 return (
 

@@ -1,49 +1,49 @@
-  import React, { /*useState, */ useContext, useEffect } from 'react';
-  import AppContext from '../context/app-context';
+import React, { /*useState, */ useContext, useEffect } from 'react';
+import AppContext from '../context/app-context';
 
 
-  const Authenticator = (props) => {
-    const context = useContext(AppContext);
-  
-    useEffect(() => {
-      const token = GetAccessTokenFromAppUrl();
-      console.info ('In Authenticator component token is', token);
-    
-      // TODO:  OAuth server in config file.
-      if (token.length === 0) {
-        window.location.href = 'https://auth-staging.fischermgmt.com/oauth/authorize?client_id=43&response_type=token';
+const Authenticator = (props) => {
+  const context = useContext(AppContext);
+
+       
+  const GetAccessTokenFromAppUrl = () => {
+    const sourceUrl = window.location.href;
+    let params = {access_token: ''};
+
+    if (sourceUrl.search('access_token') !== -1) {
+      const url = sourceUrl.replace('#', '?');
+      const regex = /[?&]([^=#]+)=([^&#]*)/g;
+      let match;
+      while ((match = regex.exec(url)) !== null) {
+        params[match[1]] = match[2];
       }
-    
-    }, []);
-  
-     
- const GetAccessTokenFromAppUrl = () => {
-  const sourceUrl = window.location.href;
-  let params = {access_token: ''};
-
-  if (sourceUrl.search('access_token') !== -1) {
-    const url = sourceUrl.replace('#', '?');
-    const regex = /[?&]([^=#]+)=([^&#]*)/g;
-    let match;
-    while ((match = regex.exec(url)) !== null) {
-      params[match[1]] = match[2];
-    }
+    }    
+    return params.access_token;
   }
- // console.info('On redirect after oauth token retrieval', params);
-  
-  return params.access_token;
-}
 
- 
+
+  useEffect(() => {
+    const token = GetAccessTokenFromAppUrl();
   
+    // TODO:  OAuth server in config file.
+    if (token.length === 0) {
+      window.location.href = 'https://auth-staging.fischermgmt.com/oauth/authorize?client_id=43&response_type=token';
+    }
+  
+    // Getting here means there was a token.
+    // TODO: What is the best way to test it is a valid token?
+    context.setAccessToken(token);
+
+  }, []);
+
+
   return (
-  
    <>
-     
-    </>
-  )};
+   </>
+  )
+};
   
-  export default Authenticator;
+export default Authenticator;
 
 
 
