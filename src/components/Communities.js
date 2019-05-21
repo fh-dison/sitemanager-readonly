@@ -57,6 +57,8 @@ return (
     Page {context.communitiesPage}
     <br/>
     <Paginator context={context}/>
+    <br/>
+    <span onClick={e=>{console.info('access token', context.accessToken)}}>Debug/test</span>
   </React.Fragment>
 )};
 

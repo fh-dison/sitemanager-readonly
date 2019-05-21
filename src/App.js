@@ -34,7 +34,7 @@ function App() {
   return (
     <GlobalState>
       <Authenticator></Authenticator>
-      <h3 style={{ display: 'inline' }}>  Land Ops Home  </h3>    View Mode  <span >Clickme</span>
+      <h3 style={{ display: 'inline' }}>  Land Ops Home  </h3>    View Mode 
       <span style={{ float: 'center' }} >
         <TabsMaterialUI
           Communities={<Communities />}
