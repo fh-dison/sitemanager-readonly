@@ -11,7 +11,8 @@ import TabsMaterialUI from './components/Tabs-MaterialUI';
 
 import GlobalState from './context/GlobalState';
 import FakeOAuth from './lib/FakeOauth';
-import {EnsureAuthenticated} from './lib/OAuth';
+//import {EnsureAuthenticated} from './lib/OAuth';
+import Authenticator from './lib/OAuth';
 
 
 /* Where things are 5-17
@@ -41,7 +42,7 @@ import {EnsureAuthenticated} from './lib/OAuth';
 //   window.location.href = 'https://auth-staging.fischermgmt.com/oauth/authorize?client_id=43&response_type=token';
 // }
 
-EnsureAuthenticated();
+//EnsureAuthenticated();
 
 const request = {
   // `url` is the server URL that will be used for the request
@@ -89,6 +90,7 @@ function App() {
 
   return (
     <GlobalState>
+      <Authenticator></Authenticator>
       <h3 style={{ display: 'inline' }}>  Land Ops Home  </h3>    View Mode  <span >Clickme</span>
       <span style={{ float: 'center' }} >
         <TabsMaterialUI
