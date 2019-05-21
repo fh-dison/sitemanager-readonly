@@ -13,16 +13,15 @@ const initialState = {
 const appReducer = (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_OMNIBOX_FILTER:
-      const result = { ...state, omniboxFilter: action.omnibox};
-      return result;
+      return { ...state, omniboxFilter: action.target};
     case UPDATE_COMMUNITIES_PAGE:
-      return { ...state, communitiesPage: action.page};
+      return { ...state, communitiesPage: action.target};
     case UPDATE_LAST_FETCHED_COMMUNITIES_PAGE:
-      return { ...state, lastFetchedCommunitiesPage: action.page};  
+      return { ...state, lastFetchedCommunitiesPage: action.target};  
     case UPDATE_COMMUNITIES_DATA:
-      return { ...state, communitiesData: action.data};  
+      return { ...state, communitiesData: action.target};  
     case SET_ACCESS_TOKEN:
-       return { ...state, accessToken: action.data};
+       return { ...state, accessToken: action.target};
 
     default:
     return state;

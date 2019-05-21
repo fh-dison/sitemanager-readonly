@@ -23,22 +23,28 @@ const GlobalState = props => {
     accessToken: '',
   });
 
-
+  /**
+   * Setter for accessToken
+   * @param {string=} token 
+   */
   const setAccessToken = token => {
-    dispatch({ type: SET_ACCESS_TOKEN, data: token });
+    dispatch({ type: SET_ACCESS_TOKEN, target: token });
   }
 
-
+  /**
+   * Setter for Omnibox
+   * @param {string=} omnibox 
+   */
   const updateOmniboxFilter = omnibox => {
-    dispatch({ type: UPDATE_OMNIBOX_FILTER, omnibox: omnibox });
+    dispatch({ type: UPDATE_OMNIBOX_FILTER, target: omnibox });
   }
     
   /**
-   * Updates global page metadata for Communities
+   * Setter for Communities Page
    * @param {integer=} page 
    */
   const updateCommunitiesPage = page => {
-    dispatch({ type: UPDATE_COMMUNITIES_PAGE, page: page });
+    dispatch({ type: UPDATE_COMMUNITIES_PAGE, target: page });
   }
 
   /**
@@ -58,8 +64,8 @@ const GlobalState = props => {
 
       .then(function (response) {
         console.info ('getCurrentCommunitiesData() promise resolving with', response.data, 'lastFetched set to ', appState.communitiesPage);
-        dispatch({ type: UPDATE_COMMUNITIES_DATA, data: response.data});  
-        dispatch({ type: UPDATE_LAST_FETCHED_COMMUNITIES_PAGE, data: appState.communitiesPage});
+        dispatch({ type: UPDATE_COMMUNITIES_DATA, target: response.data});  
+        dispatch({ type: UPDATE_LAST_FETCHED_COMMUNITIES_PAGE, target: appState.communitiesPage});
       })
     }
   }
