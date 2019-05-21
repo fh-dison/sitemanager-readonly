@@ -11,6 +11,7 @@ import TabsMaterialUI from './components/Tabs-MaterialUI';
 
 import GlobalState from './context/GlobalState';
 import FakeOAuth from './lib/FakeOauth';
+import {EnsureAuthenticated} from './lib/OAuth';
 
 
 /* Where things are 5-17
@@ -32,31 +33,85 @@ import FakeOAuth from './lib/FakeOauth';
 //FakeOAuth();
 //console.info (window.sessionStorage.accessToken);
 
-// Experimental oauth handling
 
-//const redirectUrl = "http://localhost:3100/#access_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjI5Yjk5MGQ4MWM1Y2Y2NGQ3OGFiZWNmYTcwNmYyZjhhNGMzZDI2MzUyYzI3N2RjZTU4ZTM1Y2JiMzc1ZmFmOTlmZDJlMmIwMGJlMzU1MDVlIn0.eyJhdWQiOiI0MyIsImp0aSI6IjI5Yjk5MGQ4MWM1Y2Y2NGQ3OGFiZWNmYTcwNmYyZjhhNGMzZDI2MzUyYzI3N2RjZTU4ZTM1Y2JiMzc1ZmFmOTlmZDJlMmIwMGJlMzU1MDVlIiwiaWF0IjoxNTU4MzgwNTA3LCJuYmYiOjE1NTgzODA1MDcsImV4cCI6MTU1ODM4MDk4Nywic3ViIjoiMjYwMjgiLCJzY29wZXMiOltdLCJ1c2VybmFtZSI6ImRpc29uIiwiZ3VpZCI6IjE4ZmEwNDI4LTA2MTctNGU1Ni04YWE5LWNmYjVmNWI4Y2FmMSIsIm5hbWUiOiJEYXZpZCBJc29uIiwiYXV0aF9kcml2ZXIiOiJsZGFwIn0.LGxaMLMMlTR7_h6NTOX1tc-ihM93fWDiJXTvimSkBOUjIRDQDRAYJkOC8vaEKEUy_4NvmRvCb8ha5qxF5nWjpL_g9Yjp_e9PzTyWGGWm6MKWerT-EzHI0HgxgdA6aJIBvNzG0-5WH0sltTEJYm4EFvhvhJt68_R5EHO_9lh3h44U_xkmowp9Rxpxa1arP5cEUpvl1eCfyw49PwoRGYREqLT08T8e5wju_YEyaVnm8CdlW4DYqzyk8ruch41MhVSF_ZT8A18PD30crzxfuqlJMQMA0_m4SbbfLHZZ7okkHseimyv99r4iTR9JNYazmdW_urpxufrsF9HMRLZuaPDTcC8dFSW06OazCXAtGGQ6JtMBdbliVpkpxlQ91SI2OQlFOzPrTKYOJpDrfclr1QntUAcCaXvEQhq3hEfOL3j7yBFbP3wYG-zTLu7U8TBFO99aqm7V5YHbbF7mKO8SZObh51Tq8AWYwAKxjhC4Ak8K__w-mqUcvyS7bW4Sd_gUkb5pLxHPRhuOucn7H_S0bfCnZhrbuAxTnE5NEOHKwhoj8yokSWwQpdVDRdNjDQOImIdCaPMy3HEwa6d-05g8bIfimmP0_prgxvdKcuhZLAAJ741vWKdiJXxknZiO5QF9QAiW7-5FJJyZjWTDECMqTJEGM2GBqZ1680z2pQfOP9KPCi0&token_type=Bearer&expires_in=480"
 
-const redirectUrl = window.location.href;
-console.info ('checking');
+// const token = GetAccessTokenFromAppUrl();
 
-if (window.location.href.search ('access_token') !== -1) {
-//debugger;
+// if (token.length === 0) {
+//   window.location.href = 'https://auth-staging.fischermgmt.com/oauth/authorize?client_id=43&response_type=token';
+// }
 
-  const url = window.location.href.replace('#', '?');
+EnsureAuthenticated();
 
-  var regex = /[?&]([^=#]+)=([^&#]*)/g;
-  let  params = {};
-  let  match;
-  // reduce this..
-  while (match = regex.exec(url)) {
-      params[match[1]] = match[2];
-  }
-  
-  console.info('On redirect after oauth token retrieval', params);
+const request = {
+  // `url` is the server URL that will be used for the request
+  url: '/user',
+
+  // `method` is the request method to be used when making the request
+  method: 'get', // default
+
+  // `baseURL` will be prepended to `url` unless `url` is absolute.
+  // It can be convenient to set `baseURL` for an instance of axios to pass relative URLs
+  // to methods of that instance.
+  baseURL: 'https://some-domain.com/api/',
+
+  // `transformRequest` allows changes to the request data before it is sent to the server
+  // This is only applicable for request methods 'PUT', 'POST', and 'PATCH'
+  // The last function in the array must return a string or an instance of Buffer, ArrayBuffer,
+  // FormData or Stream
+  // You may modify the headers object.
+  transformRequest: [function (data, headers) {
+    // Do whatever you want to transform the data
+
+    return data;
+  }],
+
+  // `transformResponse` allows changes to the response data to be made before
+  // it is passed to then/catch
+  transformResponse: [function (data) {
+    // Do whatever you want to transform the data
+
+    return data;
+  }],
+
+  // `headers` are custom headers to be sent
+  //  headers: {'X-Requested-With': 'XMLHttpRequest'},
+
+
+  // `maxRedirects` defines the maximum number of redirects to follow in node.js.
+  // If set to 0, no redirects will be followed.
+  maxRedirects: 0, // default
 }
 
 
+function App() {
+  // const [showHotJSON, setShowHotJSON] = useState(true);
 
+  return (
+    <GlobalState>
+      <h3 style={{ display: 'inline' }}>  Land Ops Home  </h3>    View Mode  <span >Clickme</span>
+      <span style={{ float: 'center' }} >
+        <TabsMaterialUI
+          Communities={<Communities />}
+          FischerSections={<FischerSections />}
+          LegalSections={<LegalSections />}
+          Sites={<Sites />}
+        />
+
+      </span>
+      <div className="App">
+
+        <br />
+
+      </div>
+    </GlobalState>
+
+  );
+}
+
+export default App;
+
+//  Possible alternative fake JSON https://reqres.in/.
 
 
 
@@ -67,35 +122,3 @@ if (window.location.href.search ('access_token') !== -1) {
 // https://github.com/gregnb/mui-datatables
 // Problem with Material UI Official tables is too much setup code
 // https://material-ui.com/demos/tables/
-
-
-function App() {
- // const [showHotJSON, setShowHotJSON] = useState(true);
-
-  return (
-    <GlobalState>
-    <h3 style={{display: 'inline'}}>  Land Ops Home <span>Clickme</span> </h3>    View Mode  
-    <span style={{ float: 'center'}} >
-      <TabsMaterialUI 
-      Communities={<Communities/>} 
-      FischerSections={<FischerSections/>}
-      LegalSections={<LegalSections/>}
-      Sites={<Sites/>}
-      />
-
-    </span>
-    <div className="App">
-
-    <br/>
-     
-    </div>
-    </GlobalState>
-    
-  );
-}
-
-export default App;
-
-//  Possible alternative fake JSON https://reqres.in/.
-
- 
