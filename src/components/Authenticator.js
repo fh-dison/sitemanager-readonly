@@ -33,7 +33,7 @@ const Authenticator = (props) => {
     // Getting here means there was a token.
     // TODO: What is the best way to test it is a valid token?
     context.setAccessToken(token);
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
 

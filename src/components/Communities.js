@@ -14,6 +14,7 @@ const Communities = (props) => {
   // Use lazy loading of data.  On useEffect(), request Store to sync / fetch current page of data
   useEffect(() => {
      context.syncCurrentCommunitiesPage();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context.communitiesPage]);
 
 
