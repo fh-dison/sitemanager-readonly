@@ -1,6 +1,4 @@
- 
-
-// Prototype data handler for server input data
+ // Prototype data handler for server input data
 //  Can use nested try/catch etc for advanced error handling
 //  Ex:  API data can't be parsed properly
 
@@ -28,47 +26,68 @@ export const dataFormatter = (data) => {
   }
 }
 
-// Only for setting up testing 
+/*
+    Overview:
+    
+    1.  We want the back end section to be able to put data into the React global context.
+
+    2.  The react global context is coupled to the front end,
+
+    3.  This is the main reason <Authorize/> which handles the automatic redirect to oauth, was implemented as a non-rendering React component.
+
+    4.  All the intensive server I/O "back end" processing should be separated from front end UI processing. 
+        (This is why) the back end is implemented as function in lieu of a component.
+
+    5.   Native JS Pubsub and global context forms the bridge from the non-component / function side to the component side.
+    Further reading re: using native JS Pubsub (albeit between components)
+    https://gist.github.com/pablen/63b57ee80877712ad00ca7849643b4a2
+     
+
+  
+
+
+
+
+
+    
+
+    Process:
+
+    Load the desired REST endpoint.
+
+    If you get a 403 - this [we will assume] means the token has expired.
+
+    If the token has expired:
+
+      retryCount = 0
+      success = false
+
+      while ! success && retryCount < MAX
+
+        GetNewAccessToken()
+        on success:
+          context.setAccessToken(token)
+          Load the desired REST endpoint
+            on success:
+              result = returned data
+              success = true
+            on error:
+              if error === 403
+                retryCount++
+              else
+                throw exception something else went wrong
+        on error:
+          retryCount++
+
+      
+      if retryCount === MAX
+        display unrecoverable error msg
+
+*/
+
+
+// Trivial export for setting up / verifying Jest testing 
 export const testSquare = (val) => {
   return val * val;
-}
-
-const request = {
-  // `url` is the server URL that will be used for the request
-  url: '/user',
-
-  // `method` is the request method to be used when making the request
-  method: 'get', // default
-
-  // `baseURL` will be prepended to `url` unless `url` is absolute.
-  // It can be convenient to set `baseURL` for an instance of axios to pass relative URLs
-  // to methods of that instance.
-  baseURL: 'https://some-domain.com/api/',
-
-  // `transformRequest` allows changes to the request data before it is sent to the server
-  // This is only applicable for request methods 'PUT', 'POST', and 'PATCH'
-  // The last function in the array must return a string or an instance of Buffer, ArrayBuffer,
-  // FormData or Stream
-  // You may modify the headers object.
-  transformRequest: [function (data, headers) {
-    // Do whatever you want to transform the data
-
-    return data;
-  }],
-
-  // `transformResponse` allows changes to the response data to be made before
-  // it is passed to then/catch
-  transformResponse: [function (data) {
-    // Do whatever you want to transform the data
-
-    return data;
-  }],
-
-  // `headers` are custom headers to be sent
-  //  headers: {'X-Requested-With': 'XMLHttpRequest'},
-
-
-  // `maxRedirects` defines the maximum number of redirects to follow in node.js.
-  // If set to 0, no redirects will be followed.
-  maxRedirects: 0, // default
+  // Experiment with publish here.
 }

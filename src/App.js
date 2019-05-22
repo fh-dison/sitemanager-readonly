@@ -9,7 +9,7 @@ import Sites from './components/Sites';
 import Communities from './components/Communities';
 import TabsMaterialUI from './components/Tabs-MaterialUI';
 import GlobalState from './context/GlobalState';
-
+import Idle from 'react-user-idle';
 
 /* Where things are 5-17
  1.  Ready for official source repo.
@@ -34,6 +34,16 @@ function App() {
   return (
     <GlobalState>
       <Authenticator></Authenticator>
+      <Idle
+      timeout={10}
+      throttle={5}
+      onChange={()=>{console.log('Idle change..')}}
+    >
+      {
+        idle => idle && 'idle'
+      } 
+    </Idle>
+
       <h3 style={{ display: 'inline' }}>  Land Ops Home  </h3>    View Mode 
       <span style={{ float: 'center' }} >
         <TabsMaterialUI

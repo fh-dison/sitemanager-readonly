@@ -13,7 +13,8 @@
     "react": "^16.8.6",
     "react-data-grid": "^6.1.0",
     "react-dom": "^16.8.6",
-    "react-scripts": "3.0.0"
+    "react-scripts": "3.0.0",
+    "react-user-idle": "^1.2.0"
   },
   "scripts": {
     "start": "PORT=3900 react-scripts start",

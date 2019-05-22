@@ -2,10 +2,13 @@ import React, { /*useState, */ useContext, useEffect } from 'react';
 import AppContext from '../context/app-context';
 
 
+
+
 const Authenticator = (props) => {
   const context = useContext(AppContext);
 
-       
+// Experimental subscriber for getting the latest access token
+  
   const GetAccessTokenFromAppUrl = () => {
     const sourceUrl = window.location.href;
     let params = {access_token: ''};
@@ -25,7 +28,7 @@ const Authenticator = (props) => {
   useEffect(() => {
     const token = GetAccessTokenFromAppUrl();
   
-    // TODO:  OAuth server in config file.
+    // TODO:  When Scope of project allows - Set up App Config / authentication server.
     if (token.length === 0) {
       window.location.href = 'https://auth-staging.fischermgmt.com/oauth/authorize?client_id=43&response_type=token';
     }
