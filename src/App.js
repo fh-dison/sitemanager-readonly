@@ -24,9 +24,9 @@ import Idle from 'react-user-idle';
   5.  Todo:  Where and how of filtering tbd.
 */
 
-setInterval (()=>{
-  console.info ("Faking renewal of access token");
-}, 15 * 1000);
+// setInterval (()=>{
+//   console.info ("Faking renewal of access token");
+// }, 15 * 1000);
 
 
 function App() {
@@ -34,7 +34,7 @@ function App() {
   return (
     <GlobalState>
       <Authenticator></Authenticator>
-      <Idle
+{/*       <Idle
       timeout={10}
       throttle={5}
       onChange={()=>{console.log('Idle change..')}}
@@ -42,7 +42,7 @@ function App() {
       {
         idle => idle && 'idle'
       } 
-    </Idle>
+    </Idle> */}
 
       <h3 style={{ display: 'inline' }}>  Land Ops Home  </h3>    View Mode 
       <span style={{ float: 'center' }} >

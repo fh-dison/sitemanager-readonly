@@ -1,14 +1,10 @@
 import React, { /*useState, */ useContext, useEffect } from 'react';
 import AppContext from '../context/app-context';
-
-
-
+import PubSub from 'pubsub-js';
 
 const Authenticator = (props) => {
   const context = useContext(AppContext);
 
-// Experimental subscriber for getting the latest access token
-  
   const GetAccessTokenFromAppUrl = () => {
     const sourceUrl = window.location.href;
     let params = {access_token: ''};
@@ -24,18 +20,31 @@ const Authenticator = (props) => {
     return params.access_token;
   }
 
-
+// Side effect handler / manager..
   useEffect(() => {
     const token = GetAccessTokenFromAppUrl();
   
     // TODO:  When Scope of project allows - Set up App Config / authentication server.
     if (token.length === 0) {
+       // Prevent memory leak.  See https://auth0.com/blog/four-types-of-leaks-in-your-javascript-code-and-how-to-get-rid-of-them/
+      PubSub.unsubscribe(accessTokenSubscriber); 
       window.location.href = 'https://auth-staging.fischermgmt.com/oauth/authorize?client_id=43&response_type=token';
     }
   
     // Getting here means there was a token.
     // TODO: What is the best way to test it is a valid token?
     context.setAccessToken(token);
+
+    const accessTokenSubscriber = PubSub.subscribe('access-token', (msg, data) => {
+      console.info ('accessTokenSubscriber in Authenticator received', data);
+      context.setAccessToken(data);
+    }); 
+
+    return () => {
+      console.info('accessTokenSubscriber UNsubscribing..');
+      PubSub.unsubscribe(accessTokenSubscriber);
+    } 
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

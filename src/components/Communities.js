@@ -1,4 +1,4 @@
-import React, { /*useState, */ useContext, useEffect } from 'react';
+import React, {  useState,  useContext, useEffect } from 'react';
 import {SortingState, PagingState, IntegratedPaging, IntegratedSorting} from '@devexpress/dx-react-grid';
 import { Grid, Table, PagingPanel, TableHeaderRow } from '@devexpress/dx-react-grid-material-ui';
 
@@ -8,7 +8,7 @@ import AppContext from '../context/app-context';
 import Paginator from './Paginator';
 
 
-
+import {testSquare} from '../lib/DataTools';
 import axios from 'axios';
 
 const Communities = (props) => {
@@ -29,7 +29,10 @@ const info = {
   page: context.communitiesData.page,
   data: context.communitiesData.data
 };
-console.info ('Communities rendering with ', info, 'Access Token is', context.accessToken.substring(0, 50) + '...');
+//console.info ('Communities rendering with ', info, 'Access Token is', context.accessToken.substring(0, 50) + '...');
+ 
+const [clickCount, setClickCount] = useState(0);
+
 
 return (
 
@@ -66,17 +69,17 @@ return (
     
     
     <span onClick={e=>{
-      const params = new URLSearchParams();
+
+testSquare(clickCount);
+setClickCount(clickCount + 1);
+
+
+/*       const params = new URLSearchParams();
       params.append('grant_type', 'client_credentials');
       params.append('client_id', '43');
       params.append('client_secret', '8g66LF6bQMQWNBl0F9ZCUCyxVz1VsfQtUPyIhgeJ');
 
-      // fetch("https://auth-staging.fischermgmt.com/oauth/token", {
-      //   method: 'POST',
-      //   body: params,
-      // })
-
-
+   
         axios.post('https://auth-staging.fischermgmt.com/oauth/token', params)
 
 //    axios({
@@ -95,9 +98,8 @@ return (
         
         console.log(error);
         debugger;
-      })
-      ;
-
+      });
+ */
 
 
 

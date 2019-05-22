@@ -10,6 +10,7 @@
     "@material-ui/icons": "^3.0.2",
     "axios": "^0.18.0",
     "handsontable": "^7.0.2",
+    "pubsub-js": "^1.7.0",
     "react": "^16.8.6",
     "react-data-grid": "^6.1.0",
     "react-dom": "^16.8.6",
