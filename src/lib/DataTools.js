@@ -36,7 +36,7 @@ const REST_ACCESS_TOKEN_ERROR   = -5;
 
 // TODO:  Exceptions handling, URLS and filtering..
 export const loadEndpointUsingAccessKey = (endpoint, key) => {
-
+console.info('Enter loadendpoint');
   const MAX_REST_RETRIES = 3;
 
   let accessKey = key;
@@ -44,12 +44,14 @@ export const loadEndpointUsingAccessKey = (endpoint, key) => {
   let retryCount = 0;
 
 // TODO:  Try this as async (?)
+ // const getDataAxios = async (url) => {
   const getDataAxios = (url) => {
-    let result = {
+/*     let result = {
       error: REST_API_SUCCESS,
       data: ''
-    }
-    axios({
+    } */
+   // const response = axios({
+     return axios({
       method: "get",
       url: url,
       headers: {
@@ -58,8 +60,9 @@ export const loadEndpointUsingAccessKey = (endpoint, key) => {
         // 'Content-Type': 'application/json',
       },
       transformResponse: [dataParser],
-    })
-    .then(response => {
+    });
+ 
+/*     .then(response => {
       debugger;
       result.data = response.data;
     })
@@ -69,25 +72,71 @@ export const loadEndpointUsingAccessKey = (endpoint, key) => {
 
       result.error = REST_ACCESS_TOKEN_ERROR;
       console.log('loadEndpointUsingAccessKey() failed with error', error);
-    });
-    return result;
+    }); */
+  //  return response;
   }
 
 
 
-  const getRenewedAccessToken = () => {
 
-    let result = {
-      error: REST_API_SUCCESS,
-      accessToken: ''
-    }
+ // while (! success && retryCount < MAX_REST_RETRIES) {
+    // TODO:  When Scope of project allows - Set up App Config / authentication server.
+    const server = 'https://rest-staging.fischermgmt.com';
+    const url = server + endpoint;
 
-    const params = new URLSearchParams();
-    params.append('grant_type', 'client_credentials');
-    params.append('client_id', '43');
-    params.append('client_secret', '8g66LF6bQMQWNBl0F9ZCUCyxVz1VsfQtUPyIhgeJ');
+    let results;
+debugger;
+    (async () => {
+      console.info('Going to await');
+      const r = await getDataAxios(url)  // try .catch(error)
+      console.info('Done await');
 
-    axios.post('https://auth-staging.fischermgmt.com/oauth/token', params)
+      debugger;
+      console.info(r);
+
+    })()
+
+/*     getDataAxios(url)
+    .then (result => {
+      console.info(result);
+      results = result;  
+    });
+    debugger; */
+
+/*     if (results.error === REST_API_SUCCESS) {
+      success = true;
+    } else {
+
+      retryCount++;
+          //  If 403 returned we need a renewed token..
+
+    } */
+
+
+    return 0; // We hope return data?  or error?
+
+  }
+
+
+// } // end while
+ 
+
+
+
+
+const getRenewedAccessToken = () => {
+
+  let result = {
+    error: REST_API_SUCCESS,
+    accessToken: ''
+  }
+
+  const params = new URLSearchParams();
+  params.append('grant_type', 'client_credentials');
+  params.append('client_id', '43');
+  params.append('client_secret', '8g66LF6bQMQWNBl0F9ZCUCyxVz1VsfQtUPyIhgeJ');
+
+  axios.post('https://auth-staging.fischermgmt.com/oauth/token', params)
 
 //    axios({
 //     method: "post",
@@ -97,42 +146,15 @@ export const loadEndpointUsingAccessKey = (endpoint, key) => {
 //   })
 
 
-    .then (response => {
-      result.accessToken = response.access_token;
-    })
-    .catch(error => {
-      result.error = REST_API_ERROR;
+  .then (response => {
+    result.accessToken = response.access_token;
+  })
+  .catch(error => {
+    result.error = REST_API_ERROR;
 
-       
-    });
+     
+  });
 
-
-  }
-
-
-
-  while (! success && retryCount < MAX_REST_RETRIES) {
-    // TODO:  When Scope of project allows - Set up App Config / authentication server.
-    const server = 'https://rest-staging.fischermgmt.com';
-    const url = server + endpoint;
-
-    const results = getDataAxios(url);
-    debugger;
-
-    if (results.error === REST_API_SUCCESS) {
-      success = true;
-    } else {
-
-      retryCount++;
-          //  If 403 returned we need a renewed token..
-
-    }
-
-
-
-  }
-
-  return 0; // We hope return data?  or error?
 
 }
 

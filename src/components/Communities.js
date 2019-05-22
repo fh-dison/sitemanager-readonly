@@ -71,7 +71,7 @@ return (
 
 //testSquare(clickCount);
 
-loadEndpointUsingAccessKey('/api/v3/communities', context.accessToken);
+loadEndpointUsingAccessKey('/api/v3/communities?page=1', context.accessToken);
 
 
 
