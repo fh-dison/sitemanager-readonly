@@ -1,4 +1,5 @@
 import PubSub from 'pubsub-js';
+import axios from 'axios';
 
 
 // Prototype data handler for server input data
@@ -28,13 +29,119 @@ export const dataFormatter = (data) => {
     //  Mapping error, some other error
   }
 }
+const REST_API_SUCCESS          = 0;
+const REST_API_ERROR            = -4;
+const REST_ACCESS_TOKEN_ERROR   = -5;
+
+
+// TODO:  Exceptions handling, URLS and filtering..
+export const loadEndpointUsingAccessKey = (endpoint, key) => {
+
+  const MAX_REST_RETRIES = 3;
+
+  let accessKey = key;
+  let success = false;
+  let retryCount = 0;
+
+// TODO:  Try this as async (?)
+  const getDataAxios = (url) => {
+    let result = {
+      error: REST_API_SUCCESS,
+      data: ''
+    }
+    axios({
+      method: "get",
+      url: url,
+      headers: {
+        'Authorization': 'Bearer ' + accessKey,
+        // 'Accept': 'application/json, text/plain, */*',
+        // 'Content-Type': 'application/json',
+      },
+      transformResponse: [dataParser],
+    })
+    .then(response => {
+      debugger;
+      result.data = response.data;
+    })
+    .catch(error => {
+      // if 403 vs some other error here
+      debugger;
+
+      result.error = REST_ACCESS_TOKEN_ERROR;
+      console.log('loadEndpointUsingAccessKey() failed with error', error);
+    });
+    return result;
+  }
+
+
+
+  const getRenewedAccessToken = () => {
+
+    let result = {
+      error: REST_API_SUCCESS,
+      accessToken: ''
+    }
+
+    const params = new URLSearchParams();
+    params.append('grant_type', 'client_credentials');
+    params.append('client_id', '43');
+    params.append('client_secret', '8g66LF6bQMQWNBl0F9ZCUCyxVz1VsfQtUPyIhgeJ');
+
+    axios.post('https://auth-staging.fischermgmt.com/oauth/token', params)
+
+//    axios({
+//     method: "post",
+//     url: "https://auth-staging.fischermgmt.com/oauth/token",
+//     data: params,
+//  //   transformResponse: [dataParser, dataFormatter],
+//   })
+
+
+    .then (response => {
+      result.accessToken = response.access_token;
+    })
+    .catch(error => {
+      result.error = REST_API_ERROR;
+
+       
+    });
+
+
+  }
+
+
+
+  while (! success && retryCount < MAX_REST_RETRIES) {
+    // TODO:  When Scope of project allows - Set up App Config / authentication server.
+    const server = 'https://rest-staging.fischermgmt.com';
+    const url = server + endpoint;
+
+    const results = getDataAxios(url);
+    debugger;
+
+    if (results.error === REST_API_SUCCESS) {
+      success = true;
+    } else {
+
+      retryCount++;
+          //  If 403 returned we need a renewed token..
+
+    }
+
+
+
+  }
+
+  return 0; // We hope return data?  or error?
+
+}
 
 /*
     Overview:
     
     1.  We want the back end section to be able to put data into the React global context.
 
-    2.  The react global context is coupled to the front end,
+    2.  The react global context is coupled to the front end.  Only components can access the context.
 
     3.  This is the main reason <Authorize/> which handles the automatic redirect to oauth, was implemented as a non-rendering React component.
 
@@ -52,7 +159,7 @@ export const dataFormatter = (data) => {
 
   Can pass in current global access token.
 
-  
+
     Process:
 
     Load the desired REST endpoint.

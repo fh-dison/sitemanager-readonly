@@ -7,7 +7,7 @@ import {communitiesRows, communitiesColumns} from 'mockdata/communitiesData';
 import AppContext from '../context/app-context';
 import Paginator from './Paginator';
 
-import {testSquare} from '../lib/DataTools';
+import {testSquare, loadEndpointUsingAccessKey} from '../lib/DataTools';
 //import axios from 'axios';
 
 const Communities = (props) => {
@@ -69,7 +69,13 @@ return (
     
     <span onClick={e=>{
 
-testSquare(clickCount);
+//testSquare(clickCount);
+
+loadEndpointUsingAccessKey('/api/v3/communities', context.accessToken);
+
+
+
+
 setClickCount(clickCount + 1);
 
 
