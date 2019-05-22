@@ -9,7 +9,7 @@ import Sites from './components/Sites';
 import Communities from './components/Communities';
 import TabsMaterialUI from './components/Tabs-MaterialUI';
 import GlobalState from './context/GlobalState';
-import Idle from 'react-user-idle';
+//import Idle from 'react-user-idle';
 
 /* Where things are 5-17
  1.  Ready for official source repo.

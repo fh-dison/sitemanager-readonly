@@ -20,10 +20,15 @@ const Authenticator = (props) => {
     return params.access_token;
   }
 
-// Side effect handler / manager..
+  // Side effect handler / manager
   useEffect(() => {
     const token = GetAccessTokenFromAppUrl();
   
+    const accessTokenSubscriber = PubSub.subscribe('access-token', (msg, data) => {
+      console.info ('accessTokenSubscriber in Authenticator received', data);
+      context.setAccessToken(data);
+    }); 
+
     // TODO:  When Scope of project allows - Set up App Config / authentication server.
     if (token.length === 0) {
        // Prevent memory leak.  See https://auth0.com/blog/four-types-of-leaks-in-your-javascript-code-and-how-to-get-rid-of-them/
@@ -35,11 +40,8 @@ const Authenticator = (props) => {
     // TODO: What is the best way to test it is a valid token?
     context.setAccessToken(token);
 
-    const accessTokenSubscriber = PubSub.subscribe('access-token', (msg, data) => {
-      console.info ('accessTokenSubscriber in Authenticator received', data);
-      context.setAccessToken(data);
-    }); 
-
+ 
+    //  Returning a fn here equates to a componentDidUnmount()
     return () => {
       console.info('accessTokenSubscriber UNsubscribing..');
       PubSub.unsubscribe(accessTokenSubscriber);

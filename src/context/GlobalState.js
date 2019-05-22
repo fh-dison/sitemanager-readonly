@@ -52,7 +52,7 @@ const GlobalState = props => {
    */
   const syncCurrentCommunitiesPage = () => {
 
-    console.info ('syncCurrentCommunitiesPage()', appState.communitiesPage, appState.lastFetchedCommunitiesPage);
+   // console.info ('syncCurrentCommunitiesPage()', appState.communitiesPage, appState.lastFetchedCommunitiesPage);
 
     if (appState.lastFetchedPage !== appState.communitiesPage) {
 
@@ -63,7 +63,7 @@ const GlobalState = props => {
       axios.get(`https://reqres.in/api/users?page=${appState.communitiesPage}`)
 
       .then(function (response) {
-        console.info ('getCurrentCommunitiesData() promise resolving with', response.data, 'lastFetched set to ', appState.communitiesPage);
+   //     console.info ('getCurrentCommunitiesData() promise resolving with', response.data, 'lastFetched set to ', appState.communitiesPage);
         dispatch({ type: UPDATE_COMMUNITIES_DATA, target: response.data});  
         dispatch({ type: UPDATE_LAST_FETCHED_COMMUNITIES_PAGE, target: appState.communitiesPage});
       })

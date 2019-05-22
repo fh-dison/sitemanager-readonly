@@ -7,9 +7,8 @@ import {communitiesRows, communitiesColumns} from 'mockdata/communitiesData';
 import AppContext from '../context/app-context';
 import Paginator from './Paginator';
 
-
 import {testSquare} from '../lib/DataTools';
-import axios from 'axios';
+//import axios from 'axios';
 
 const Communities = (props) => {
   const context = useContext(AppContext);
@@ -25,15 +24,15 @@ const Communities = (props) => {
     const rows = communitiesRows;
     const columns = communitiesColumns;
 
-const info = {
+/* const info = {
   page: context.communitiesData.page,
   data: context.communitiesData.data
 };
-//console.info ('Communities rendering with ', info, 'Access Token is', context.accessToken.substring(0, 50) + '...');
+console.info ('Communities rendering with ', info, 'Access Token is', context.accessToken.substring(0, 50) + '...'); */
  
 const [clickCount, setClickCount] = useState(0);
 
-
+console.info ('Communities page is ', context.communitiesPage, context.omniboxFilter);
 return (
 
  <React.Fragment>
