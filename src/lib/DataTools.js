@@ -40,15 +40,11 @@ export const loadEndpointUsingAccessKey2 = async (endpoint, key) => {
 // Filtering and URLS should have already been set up by now
 // TODO:  Exceptions handling
 export const loadEndpointUsingAccessKey = async (endpoint, accessKey) => {
-  console.info('Enter loadendpoint');
-  const MAX_REST_RETRIES = 3;
 
-  let success = false;
-  let retryCount = 0;
+  const MAX_REST_RETRIES = 3;
   let finalResult = {status: REST_API_ERROR};
 
   const getDataAxios = async (url, accessKey) => {
- 
     let result = {
       status: REST_API_SUCCESS,
       data: ''
@@ -116,14 +112,16 @@ export const loadEndpointUsingAccessKey = async (endpoint, accessKey) => {
   }
   debugger;
 
+  let retryCount = 0;
   while (retryCount < MAX_REST_RETRIES) {
-    const first = await loadAttempt(url, accessKey);
+    const result = await loadAttempt(url, accessKey);
 
-    if (first.status === REST_ACCESS_TOKEN_ERROR) {
+    if (result.status === REST_ACCESS_TOKEN_ERROR) {
       accessKey = await  getRenewedAccessToken();
       console.info('Got a 403.. New access key is', accessKey);
     }
     retryCount++;
+    console.info('retryCount is now', retryCount);
     debugger;
 }
 
