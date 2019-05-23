@@ -74,7 +74,7 @@ console.info('Enter loadendpoint');
   
     debugger;
     console.info(result);
-   
+   return result;
     }
 
 
@@ -86,7 +86,9 @@ console.info('Enter loadendpoint');
 
 // Loop here?
 
-    getDataAxios(url);
+    getDataAxios(url).then(result => {
+      debugger;
+    });
  
 
     return 0; // We hope return data?  or error?
