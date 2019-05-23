@@ -39,7 +39,7 @@ export const loadEndpointUsingAccessKey2 = async (endpoint, key) => {
 
 // Filtering and URLS should have already been set up by now
 // TODO:  Exceptions handling
-export const loadEndpointUsingAccessKey = async (endpoint, accessKey) => {
+export const loadEndpointUsingAccessKey = async (endpoint, accessToken) => {
 
   const MAX_REST_RETRIES = 3;
   let finalResult = {status: REST_API_ERROR};
@@ -53,17 +53,22 @@ export const loadEndpointUsingAccessKey = async (endpoint, accessKey) => {
       method: "get",
       url: url,
       headers: {
-        'Authorization': 'Bearer ' + accessKey,
+        'Authorization': 'Bearer ' + accessToken,
       },
       transformResponse: [dataParser],
     })
     .then(response => {
-      debugger;
+      console.info('getDataAxios() yielded', response.data);
       result.data = response.data;
     })
     .catch(error => {
-      debugger;
       result.status = (error.response.status === 403 ? REST_ACCESS_TOKEN_ERROR : REST_API_ERROR);
+      {
+      let msg;
+      msg = (error.response.status === 403 ? 'REST_ACCESS_TOKEN_ERROR' : 'REST_API_ERROR');
+    
+      console.info('getDataAxios() yielded', msg);
+      }
     });
          
     return result;
@@ -85,11 +90,11 @@ export const loadEndpointUsingAccessKey = async (endpoint, accessKey) => {
     await axios.post('https://auth-staging.fischermgmt.com/oauth/token', params)
       
     .then (response => {
-      debugger;
+      console.info('getRenewedAccessToken() yielded', response.data.access_token);
       result.accessToken = response.data.access_token;
     })
     .catch(error => {
-      debugger;
+      console.info('getRenewedAccessToken() yielded', 'REST_API_ERROR');
       result.status = REST_API_ERROR;        
     });
 
@@ -100,7 +105,7 @@ export const loadEndpointUsingAccessKey = async (endpoint, accessKey) => {
   const server = 'https://rest-staging.fischermgmt.com';
   const url = server + endpoint;
 
-
+  // TODO:  This wrapper should go away, just call as getDataAxios()
   async function loadAttempt(url, accessKey) {
     let result = {status: -1};
     try {
@@ -110,65 +115,24 @@ export const loadEndpointUsingAccessKey = async (endpoint, accessKey) => {
     }
     return result;
   }
-  debugger;
+ // debugger;
 
   let retryCount = 0;
-  while (retryCount < MAX_REST_RETRIES) {
-    const result = await loadAttempt(url, accessKey);
+  let success = false;
+  while (! success && retryCount < MAX_REST_RETRIES) {
+    const result = await loadAttempt(url, accessToken);
 
     if (result.status === REST_ACCESS_TOKEN_ERROR) {
-      accessKey = await  getRenewedAccessToken();
-      console.info('Got a 403.. New access key is', accessKey);
+      const accessResult = await  getRenewedAccessToken();
+      console.info('Got a 403.. New access token is', accessResult.accessToken);
+    } else if (result.status === REST_API_SUCCESS) {
+      success = true;
+      finalResult = result.data;
     }
     retryCount++;
     console.info('retryCount is now', retryCount);
-    debugger;
-}
-
-
-/* 
-    await getDataAxios(url).then(result => {
-      debugger;
-      finalResult = result;
-    }); */
-     
-/*       if (result.error === REST_API_SUCCESS){
-        console.info('getdataaxios returned', result);
-        debugger;
-        finalResult = result;
-      }
-      //  getRenewedAccessToken().then(result => {
-      //   if (result.error === REST_API_SUCCESS) {
-      //     accessKey = result.accessToken;
-      //   }
-
-      //   // 2nd Attempt
-      //   getDataAxios(url).then(result => {
-      //     if (result.error === REST_API_SUCCESS) return result;
-      //     getRenewedAccessToken().then(result => {
-      //       if (result.error === REST_API_SUCCESS) {
-      //         accessKey = result.accessToken;
-      //       }
-    
-    
-      //       // 3rd Attempt
-      //       getDataAxios(url).then(result => {
-      //         if (result.error === REST_API_SUCCESS) return result;
-      //         console.info ('something failed....');
-      //         return {};
-      //         // getRenewedAccessToken().then(result => {
-      //         //   if (result.error === REST_API_SUCCESS) {
-      //         //     accessKey = result.accessToken;
-      //         //   }
-        
-        
-      //         // });
-      //       });
-      //     });
-      //   });
-      // });  
-    }); */
-
+   // debugger;
+  }
     
     return finalResult;
   }
@@ -269,6 +233,50 @@ export const loadEndpointUsingAccessKey = async (endpoint, accessKey) => {
         display unrecoverable error msg
 
 */
+
+
+/* 
+    await getDataAxios(url).then(result => {
+      debugger;
+      finalResult = result;
+    }); */
+     
+/*       if (result.error === REST_API_SUCCESS){
+        console.info('getdataaxios returned', result);
+        debugger;
+        finalResult = result;
+      }
+      //  getRenewedAccessToken().then(result => {
+      //   if (result.error === REST_API_SUCCESS) {
+      //     accessKey = result.accessToken;
+      //   }
+
+      //   // 2nd Attempt
+      //   getDataAxios(url).then(result => {
+      //     if (result.error === REST_API_SUCCESS) return result;
+      //     getRenewedAccessToken().then(result => {
+      //       if (result.error === REST_API_SUCCESS) {
+      //         accessKey = result.accessToken;
+      //       }
+    
+    
+      //       // 3rd Attempt
+      //       getDataAxios(url).then(result => {
+      //         if (result.error === REST_API_SUCCESS) return result;
+      //         console.info ('something failed....');
+      //         return {};
+      //         // getRenewedAccessToken().then(result => {
+      //         //   if (result.error === REST_API_SUCCESS) {
+      //         //     accessKey = result.accessToken;
+      //         //   }
+        
+        
+      //         // });
+      //       });
+      //     });
+      //   });
+      // });  
+    }); */
 
 
 // Trivial export for setting up / verifying Jest testing 
