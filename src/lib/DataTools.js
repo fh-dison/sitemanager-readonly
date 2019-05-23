@@ -34,24 +34,23 @@ const REST_API_ERROR            = -4;
 const REST_ACCESS_TOKEN_ERROR   = -5;
 
 export const loadEndpointUsingAccessKey2 = async (endpoint, key) => {
-  return {error: 0};
+  return {status: 0};
 }
 
 // Filtering and URLS should have already been set up by now
 // TODO:  Exceptions handling
-export const loadEndpointUsingAccessKey = async (endpoint, key) => {
+export const loadEndpointUsingAccessKey = async (endpoint, accessKey) => {
   console.info('Enter loadendpoint');
   const MAX_REST_RETRIES = 3;
 
-  let accessKey = key;
   let success = false;
   let retryCount = 0;
-  let finalResult = {error: REST_API_ERROR};
+  let finalResult = {status: REST_API_ERROR};
 
-  const getDataAxios = async (url) => {
+  const getDataAxios = async (url, accessKey) => {
  
     let result = {
-      error: REST_API_SUCCESS,
+      status: REST_API_SUCCESS,
       data: ''
     }
     await axios({
@@ -68,7 +67,7 @@ export const loadEndpointUsingAccessKey = async (endpoint, key) => {
     })
     .catch(error => {
       debugger;
-      result.error = (error.response.status === 403 ? REST_ACCESS_TOKEN_ERROR : REST_API_ERROR);
+      result.status = (error.response.status === 403 ? REST_ACCESS_TOKEN_ERROR : REST_API_ERROR);
     });
          
     return result;
@@ -78,7 +77,7 @@ export const loadEndpointUsingAccessKey = async (endpoint, key) => {
   const getRenewedAccessToken = async () => {
 
     let result = {
-      error: REST_API_SUCCESS,
+      status: REST_API_SUCCESS,
       accessToken: ''
     }
   
@@ -95,63 +94,85 @@ export const loadEndpointUsingAccessKey = async (endpoint, key) => {
     })
     .catch(error => {
       debugger;
-      result.error = REST_API_ERROR;        
+      result.status = REST_API_ERROR;        
     });
 
     return result;
   }
 
 
-    const server = 'https://rest-staging.fischermgmt.com';
-    const url = server + endpoint;
+  const server = 'https://rest-staging.fischermgmt.com';
+  const url = server + endpoint;
 
-    // TODO:  Is there a way to combine these 2 into a single promise?  fix accessKey 
+
+  async function loadAttempt(url, accessKey) {
+    let result = {status: -1};
+    try {
+      result = await getDataAxios(url, accessKey);
+    } catch (err) {
+      throw Error(err);
+    }
+    return result;
+  }
+  debugger;
+
+  while (retryCount < MAX_REST_RETRIES) {
+    const first = await loadAttempt(url, accessKey);
+
+    if (first.status === REST_ACCESS_TOKEN_ERROR) {
+      accessKey = await  getRenewedAccessToken();
+      console.info('Got a 403.. New access key is', accessKey);
+    }
+    retryCount++;
     debugger;
-  
+}
 
 
+/* 
     await getDataAxios(url).then(result => {
       debugger;
+      finalResult = result;
+    }); */
      
-      if (result.error === REST_API_SUCCESS){
+/*       if (result.error === REST_API_SUCCESS){
         console.info('getdataaxios returned', result);
         debugger;
         finalResult = result;
       }
-/*       getRenewedAccessToken().then(result => {
-        if (result.error === REST_API_SUCCESS) {
-          accessKey = result.accessToken;
-        }
+      //  getRenewedAccessToken().then(result => {
+      //   if (result.error === REST_API_SUCCESS) {
+      //     accessKey = result.accessToken;
+      //   }
 
-        // 2nd Attempt
-        getDataAxios(url).then(result => {
-          if (result.error === REST_API_SUCCESS) return result;
-          getRenewedAccessToken().then(result => {
-            if (result.error === REST_API_SUCCESS) {
-              accessKey = result.accessToken;
-            }
+      //   // 2nd Attempt
+      //   getDataAxios(url).then(result => {
+      //     if (result.error === REST_API_SUCCESS) return result;
+      //     getRenewedAccessToken().then(result => {
+      //       if (result.error === REST_API_SUCCESS) {
+      //         accessKey = result.accessToken;
+      //       }
     
     
-            // 3rd Attempt
-            getDataAxios(url).then(result => {
-              if (result.error === REST_API_SUCCESS) return result;
-              console.info ('something failed....');
-              return {};
-              // getRenewedAccessToken().then(result => {
-              //   if (result.error === REST_API_SUCCESS) {
-              //     accessKey = result.accessToken;
-              //   }
+      //       // 3rd Attempt
+      //       getDataAxios(url).then(result => {
+      //         if (result.error === REST_API_SUCCESS) return result;
+      //         console.info ('something failed....');
+      //         return {};
+      //         // getRenewedAccessToken().then(result => {
+      //         //   if (result.error === REST_API_SUCCESS) {
+      //         //     accessKey = result.accessToken;
+      //         //   }
         
         
-              // });
-            });
-          });
-        });
-      }); */
-    });
+      //         // });
+      //       });
+      //     });
+      //   });
+      // });  
+    }); */
 
     
-return finalResult;
+    return finalResult;
   }
 
  
