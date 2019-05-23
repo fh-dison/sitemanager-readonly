@@ -33,8 +33,8 @@ const REST_API_SUCCESS          = 0;
 const REST_API_ERROR            = -4;
 const REST_ACCESS_TOKEN_ERROR   = -5;
 
-
-// TODO:  Exceptions handling, URLS and filtering..
+// Filtering and URLS should have already been set up by now
+// TODO:  Exceptions handling
 export const loadEndpointUsingAccessKey = (endpoint, key) => {
 console.info('Enter loadendpoint');
   const MAX_REST_RETRIES = 3;
@@ -45,37 +45,37 @@ console.info('Enter loadendpoint');
 
 // TODO:  Try this as async (?)
  // const getDataAxios = async (url) => {
-  const getDataAxios = (url) => {
-/*     let result = {
+  const getDataAxios = async (url) => {
+ 
+    let result = {
       error: REST_API_SUCCESS,
       data: ''
-    } */
-   // const response = axios({
-     return axios({
+    }
+    console.info('Going to await');
+      await axios({
       method: "get",
       url: url,
       headers: {
         'Authorization': 'Bearer ' + accessKey,
-        // 'Accept': 'application/json, text/plain, */*',
-        // 'Content-Type': 'application/json',
       },
       transformResponse: [dataParser],
-    });
- 
-/*     .then(response => {
-      debugger;
+    })
+    .then(response => {
       result.data = response.data;
     })
     .catch(error => {
-      // if 403 vs some other error here
       debugger;
-
-      result.error = REST_ACCESS_TOKEN_ERROR;
-      console.log('loadEndpointUsingAccessKey() failed with error', error);
-    }); */
-  //  return response;
-  }
-
+      // 
+      result.error = (error.response.status === 403 ? REST_ACCESS_TOKEN_ERROR : REST_API_ERROR);
+    });
+     
+        
+    console.info('Done await');
+  
+    debugger;
+    console.info(result);
+   
+    }
 
 
 
@@ -84,45 +84,19 @@ console.info('Enter loadendpoint');
     const server = 'https://rest-staging.fischermgmt.com';
     const url = server + endpoint;
 
-    let results;
-debugger;
-    (async () => {
-      console.info('Going to await');
-      const r = await getDataAxios(url)  // try .catch(error)
-      console.info('Done await');
+// Loop here?
 
-      debugger;
-      console.info(r);
-
-    })()
-
-/*     getDataAxios(url)
-    .then (result => {
-      console.info(result);
-      results = result;  
-    });
-    debugger; */
-
-/*     if (results.error === REST_API_SUCCESS) {
-      success = true;
-    } else {
-
-      retryCount++;
-          //  If 403 returned we need a renewed token..
-
-    } */
-
+    getDataAxios(url);
+ 
 
     return 0; // We hope return data?  or error?
 
   }
 
-
-// } // end while
  
 
 
-
+//--------------------------------------------------------------------------------------------------------------------
 
 const getRenewedAccessToken = () => {
 
