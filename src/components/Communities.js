@@ -7,7 +7,7 @@ import {communitiesRows, communitiesColumns} from 'mockdata/communitiesData';
 import AppContext from '../context/app-context';
 import Paginator from './Paginator';
 
-import {testSquare, loadEndpointUsingAccessKey} from '../lib/DataTools';
+import {testSquare, loadEndpointUsingAccessKey, loadEndpointUsingAccessKey2} from '../lib/DataTools';
 //import axios from 'axios';
 
 const Communities = (props) => {
@@ -71,8 +71,10 @@ return (
 
 //testSquare(clickCount);
 
-loadEndpointUsingAccessKey('/api/v3/communities?page=1', context.accessToken);
+loadEndpointUsingAccessKey2('/api/v3/communities?page=1', context.accessToken).then(response => {
+  debugger;
 
+});
 
 
 

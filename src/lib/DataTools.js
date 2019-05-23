@@ -33,15 +33,20 @@ const REST_API_SUCCESS          = 0;
 const REST_API_ERROR            = -4;
 const REST_ACCESS_TOKEN_ERROR   = -5;
 
+export const loadEndpointUsingAccessKey2 = async (endpoint, key) => {
+  return {error: 0};
+}
+
 // Filtering and URLS should have already been set up by now
 // TODO:  Exceptions handling
-export const loadEndpointUsingAccessKey = (endpoint, key) => {
-console.info('Enter loadendpoint');
+export const loadEndpointUsingAccessKey = async (endpoint, key) => {
+  console.info('Enter loadendpoint');
   const MAX_REST_RETRIES = 3;
 
   let accessKey = key;
   let success = false;
   let retryCount = 0;
+  let finalResult = {error: REST_API_ERROR};
 
   const getDataAxios = async (url) => {
  
@@ -49,8 +54,7 @@ console.info('Enter loadendpoint');
       error: REST_API_SUCCESS,
       data: ''
     }
-    console.info('Going to await');
-      await axios({
+    await axios({
       method: "get",
       url: url,
       headers: {
@@ -59,71 +63,95 @@ console.info('Enter loadendpoint');
       transformResponse: [dataParser],
     })
     .then(response => {
+      debugger;
       result.data = response.data;
     })
     .catch(error => {
-     // debugger;
-      // 
+      debugger;
       result.error = (error.response.status === 403 ? REST_ACCESS_TOKEN_ERROR : REST_API_ERROR);
     });
-     
-      
-    console.info('Done await', result);
-  
-   return result;
-    }
-
-
-    const getRenewedAccessToken = async () => {
-
-      let result = {
-        error: REST_API_SUCCESS,
-        accessToken: ''
-      }
-    
-      const params = new URLSearchParams();
-      params.append('grant_type', 'client_credentials');
-      params.append('client_id', '43');
-      params.append('client_secret', '8g66LF6bQMQWNBl0F9ZCUCyxVz1VsfQtUPyIhgeJ');
-    
-      await axios.post('https://auth-staging.fischermgmt.com/oauth/token', params)
-        
-      .then (response => {
-        debugger;
-        result.accessToken = response.data.access_token;
-      })
-      .catch(error => {
-        debugger;
-        result.error = REST_API_ERROR;
-    
          
-      });
+    return result;
+  }
 
-      return result;
+
+  const getRenewedAccessToken = async () => {
+
+    let result = {
+      error: REST_API_SUCCESS,
+      accessToken: ''
     }
+  
+    const params = new URLSearchParams();
+    params.append('grant_type', 'client_credentials');
+    params.append('client_id', '43');
+    params.append('client_secret', '8g66LF6bQMQWNBl0F9ZCUCyxVz1VsfQtUPyIhgeJ');
+  
+    await axios.post('https://auth-staging.fischermgmt.com/oauth/token', params)
+      
+    .then (response => {
+      debugger;
+      result.accessToken = response.data.access_token;
+    })
+    .catch(error => {
+      debugger;
+      result.error = REST_API_ERROR;        
+    });
 
+    return result;
+  }
 
 
     const server = 'https://rest-staging.fischermgmt.com';
     const url = server + endpoint;
 
-// TODO:  fix accessKey 
-debugger;
-    getDataAxios(url).then(result => {
+    // TODO:  Is there a way to combine these 2 into a single promise?  fix accessKey 
+    debugger;
+  
+
+
+    await getDataAxios(url).then(result => {
       debugger;
-      if (result.error === REST_API_SUCCESS) return result;
-      debugger;
-      getRenewedAccessToken().then(result => {
+     
+      if (result.error === REST_API_SUCCESS){
+        console.info('getdataaxios returned', result);
         debugger;
+        finalResult = result;
+      }
+/*       getRenewedAccessToken().then(result => {
         if (result.error === REST_API_SUCCESS) {
           accessKey = result.accessToken;
         }
-      });
 
+        // 2nd Attempt
+        getDataAxios(url).then(result => {
+          if (result.error === REST_API_SUCCESS) return result;
+          getRenewedAccessToken().then(result => {
+            if (result.error === REST_API_SUCCESS) {
+              accessKey = result.accessToken;
+            }
+    
+    
+            // 3rd Attempt
+            getDataAxios(url).then(result => {
+              if (result.error === REST_API_SUCCESS) return result;
+              console.info ('something failed....');
+              return {};
+              // getRenewedAccessToken().then(result => {
+              //   if (result.error === REST_API_SUCCESS) {
+              //     accessKey = result.accessToken;
+              //   }
+        
+        
+              // });
+            });
+          });
+        });
+      }); */
     });
 
     
-
+return finalResult;
   }
 
  

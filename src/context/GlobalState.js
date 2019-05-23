@@ -9,6 +9,7 @@ import {
 } from './actions';
 import appReducer from './reducers';
 import axios from 'axios';
+import {loadEndpointUsingAccessKey} from '../lib/DataTools';
 
 
 // Could be named Store
@@ -54,16 +55,15 @@ const GlobalState = props => {
 
    // console.info ('syncCurrentCommunitiesPage()', appState.communitiesPage, appState.lastFetchedCommunitiesPage);
 
-    if (appState.lastFetchedPage !== appState.communitiesPage) {
+    if (appState.lastFetchedPage !== appState.communitiesPage && appState.accessToken.length > 0) {
 
-      // axios.defaults.headers.common = {'Authorization': `Bearer ${window.sessionStorage.accessToken}`}
-      // axios.get('https://rest-staging.fischermgmt.com/api/v3/communities?filters[code][operator]=LIKE&filters[code][value]=AR%&filters[name][operator]=LIKE&filters[name][value]=A%',
-      // )
 
-      axios.get(`https://reqres.in/api/users?page=${appState.communitiesPage}`)
-
-      .then(function (response) {
+     // axios.get(`https://reqres.in/api/users?page=${appState.communitiesPage}`)
+       loadEndpointUsingAccessKey('/api/v3/communities?page=1', appState.accessToken)
+      .then(response => {
+        debugger;
    //     console.info ('getCurrentCommunitiesData() promise resolving with', response.data, 'lastFetched set to ', appState.communitiesPage);
+   if (! response) return;
         dispatch({ type: UPDATE_COMMUNITIES_DATA, target: response.data});  
         dispatch({ type: UPDATE_LAST_FETCHED_COMMUNITIES_PAGE, target: appState.communitiesPage});
       })
