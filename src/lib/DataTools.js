@@ -43,8 +43,6 @@ console.info('Enter loadendpoint');
   let success = false;
   let retryCount = 0;
 
-// TODO:  Try this as async (?)
- // const getDataAxios = async (url) => {
   const getDataAxios = async (url) => {
  
     let result = {
@@ -64,34 +62,67 @@ console.info('Enter loadendpoint');
       result.data = response.data;
     })
     .catch(error => {
-      debugger;
+     // debugger;
       // 
       result.error = (error.response.status === 403 ? REST_ACCESS_TOKEN_ERROR : REST_API_ERROR);
     });
      
-        
-    console.info('Done await');
+      
+    console.info('Done await', result);
   
-    debugger;
-    console.info(result);
    return result;
     }
 
 
+    const getRenewedAccessToken = async () => {
 
- // while (! success && retryCount < MAX_REST_RETRIES) {
-    // TODO:  When Scope of project allows - Set up App Config / authentication server.
+      let result = {
+        error: REST_API_SUCCESS,
+        accessToken: ''
+      }
+    
+      const params = new URLSearchParams();
+      params.append('grant_type', 'client_credentials');
+      params.append('client_id', '43');
+      params.append('client_secret', '8g66LF6bQMQWNBl0F9ZCUCyxVz1VsfQtUPyIhgeJ');
+    
+      await axios.post('https://auth-staging.fischermgmt.com/oauth/token', params)
+        
+      .then (response => {
+        debugger;
+        result.accessToken = response.data.access_token;
+      })
+      .catch(error => {
+        debugger;
+        result.error = REST_API_ERROR;
+    
+         
+      });
+
+      return result;
+    }
+
+
+
     const server = 'https://rest-staging.fischermgmt.com';
     const url = server + endpoint;
 
-// Loop here?
-
+// TODO:  fix accessKey 
+debugger;
     getDataAxios(url).then(result => {
       debugger;
-    });
- 
+      if (result.error === REST_API_SUCCESS) return result;
+      debugger;
+      getRenewedAccessToken().then(result => {
+        debugger;
+        if (result.error === REST_API_SUCCESS) {
+          accessKey = result.accessToken;
+        }
+      });
 
-    return 0; // We hope return data?  or error?
+    });
+
+    
 
   }
 
@@ -100,7 +131,7 @@ console.info('Enter loadendpoint');
 
 //--------------------------------------------------------------------------------------------------------------------
 
-const getRenewedAccessToken = () => {
+/* const getRenewedAccessToken = () => {
 
   let result = {
     error: REST_API_SUCCESS,
@@ -129,10 +160,10 @@ const getRenewedAccessToken = () => {
     result.error = REST_API_ERROR;
 
      
-  });
+  }); */
 
 
-}
+ 
 
 /*
     Overview:
