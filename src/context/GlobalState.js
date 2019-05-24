@@ -20,7 +20,7 @@ const GlobalState = props => {
   const [appState, dispatch] = useReducer(appReducer, { 
     omniboxFilter: 'none',
     communitiesPage: 0,
-    communitiesData: [],
+    communitiesData: {data: []},
     fetchCurrentCommunitiesData: () =>{},
     lastFetchedCommunitiesPage: -1,
     accessToken: '',
@@ -57,7 +57,7 @@ const GlobalState = props => {
   const syncCurrentCommunitiesPage = () => {
 
     if (appState.lastFetchedCommunitiesPage !== appState.communitiesPage && appState.accessToken.length > 0) {
-       const url = `/api/v3/communities?per_page=10&page=${appState.communitiesPage}`;
+       const url = `/api/v3/communities?per_page=10&includes=division&page=${appState.communitiesPage}`;
        loadEndpointUsingAccessKey(url, appState.accessToken)
       .then(response => {
         if (response.status === REST_API_SUCCESS) {

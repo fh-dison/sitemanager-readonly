@@ -305,8 +305,8 @@ export const communitiesRows =
 
 
   export const communitiesColumns = [
-    { name: 'division', title: 'Division' },
-    { name: 'community_code', title: 'Community Code' },
-    { name: 'community_name', title: 'Community Name' },
-    { name: 'budget_neighborhood', title: 'Budget Neighborhood' },
+    { name: 'division', title: 'Division' }, // .division.division
+    { name: 'community_code', title: 'Community Code' },  //  .code 
+    { name: 'community_name', title: 'Community Name' },  //  .name
+    { name: 'budget_neighborhood', title: 'Budget Neighborhood' }, // .division.division_name
   ];

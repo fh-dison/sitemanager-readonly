@@ -21,9 +21,18 @@ const Communities = (props) => {
 
 
   // TODO: Move to React Context 
-    const rows = communitiesRows;
+    //const rows = communitiesRows;
     const columns = communitiesColumns;
-
+debugger;
+    // TODO:  Try point-free
+    const rows = context.communitiesData.data.map(community=>{
+      return {
+        division: community.division.division,
+        community_code: community.code,
+        community_name: community.name,
+        budget_neighborhood: community.division.division_name,
+      };
+    });
 /* const info = {
   page: context.communitiesData.page,
   data: context.communitiesData.data
@@ -52,7 +61,7 @@ return (
 
     <Table />
     <TableHeaderRow showSortingControls />
-    <PagingPanel pageSizes={20} />
+    {/* <PagingPanel pageSizes={20} /> */}
 
   </Grid>
   <br/>
@@ -71,7 +80,7 @@ return (
 
 //testSquare(clickCount);
 console.clear();
-loadEndpointUsingAccessKey('/api/v3/communities?per_page=10&page=1', context.accessToken).then(response => {
+loadEndpointUsingAccessKey('/api/v3/communities?per_page=10&includes=division&page=1', context.accessToken).then(response => {
   context.setAccessToken(response.accessToken); 
   console.info('Data is ', response.data);
 
