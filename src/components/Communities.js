@@ -5,7 +5,7 @@ import { Grid, Table, /* PagingPanel, */ TableHeaderRow } from '@devexpress/dx-r
 import {communitiesColumns} from 'mockdata/communitiesData';
 
 import AppContext from '../context/app-context';
-import Paginator from './Paginator';
+import Pagination from "material-ui-flat-pagination";
 
 import {/* testSquare, */ loadEndpointUsingAccessKey} from '../lib/DataTools';
 //import axios from 'axios';
@@ -32,12 +32,7 @@ const Communities = (props) => {
       };
     });
 
-/* const info = {
-  page: context.communitiesData.page,
-  data: context.communitiesData.data
-};
- */
- 
+
  console.info (`Communities rendering page ${context.communitiesPage} with data `, rows);
 
 const [clickCount, setClickCount] = useState(0);
@@ -72,9 +67,17 @@ return (
     <br/>
     Page {context.communitiesPage}
     <br/>
-    <Paginator context={context}/>
+    <Pagination
+          limit={10}
+          offset={(context.communitiesPage - 1) * 10}
+          total={context.communitiesData.total}
+          onClick={(e, offset) => {
+            context.updateCommunitiesPage((offset / 10) + 1)
+          }
+          }
+        /> 
     <br/>
-    <span onClick={e=>{console.info('access token', context.accessToken)}}>Debug</span>
+    <span onClick={e=>{console.info('access_token in Global Context', context.accessToken)}}>Debug</span>
     
     
     <span onClick={e=>{
