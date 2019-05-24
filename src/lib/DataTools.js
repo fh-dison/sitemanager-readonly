@@ -22,7 +22,8 @@ export const dataParser = (data, headers) => {
   }
 }
 
-
+ 
+/* 
 export const dataFormatter = (data) => {
   try {
     const values = data.map(v => {
@@ -33,7 +34,7 @@ export const dataFormatter = (data) => {
     //  Mapping error, some other error
   }
 }
-
+ */
 
 // For debugging only
 export const loadEndpointUsingAccessKey2 = async (endpoint, key) => {
@@ -42,7 +43,7 @@ export const loadEndpointUsingAccessKey2 = async (endpoint, key) => {
 
 // Filtering and URLS should have already been set up by now
 // TODO:  Exceptions handling
-export const loadEndpointUsingAccessKey = async (endpoint, accessToken) => {
+export const loadEndpointUsingAccessKey = async (endpoint, accessToken, formatter = data => data) => {
 
   const MAX_REST_RETRIES = 3;
   let finalResult = {
@@ -51,8 +52,8 @@ export const loadEndpointUsingAccessKey = async (endpoint, accessToken) => {
     data: [],
   };
  
-  // TODO:  Formalize exception handling, esp. for transformResponse() handler
-  const getDataAxios = async (url, token) => {
+  // TODO:  Formalize exception handling, esp. for transformResponse() handler 
+  const getDataAxios = async (url, token, formatter) => {
 
     console.info(`getDataAxios() with url ${url} token: ${token.substring(token.length - 30, token.length)}`);
 
@@ -67,7 +68,7 @@ export const loadEndpointUsingAccessKey = async (endpoint, accessToken) => {
       headers: {
         'Authorization': 'Bearer ' + token,
       },
-      transformResponse: [dataParser],
+      transformResponse: [dataParser, formatter],
     })
     .then(response => {
       console.info(`getDataAxios() SUCCESS `);
@@ -118,7 +119,7 @@ export const loadEndpointUsingAccessKey = async (endpoint, accessToken) => {
   let retryCount = 0;
   let success = false;
   while (! success && retryCount < MAX_REST_RETRIES) {
-    const response = await getDataAxios(url, accessToken);
+    const response = await getDataAxios(url, accessToken, formatter);
     finalResult.status = response.status;
     if (response.status === REST_ACCESS_TOKEN_ERROR) {
       const accessResponse = await getRenewedAccessToken();

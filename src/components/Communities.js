@@ -1,14 +1,10 @@
 import React, {  useState,  useContext, useEffect } from 'react';
 import {SortingState, PagingState, IntegratedPaging, IntegratedSorting} from '@devexpress/dx-react-grid';
 import { Grid, Table, /* PagingPanel, */ TableHeaderRow } from '@devexpress/dx-react-grid-material-ui';
-
 import {communitiesColumns} from 'mockdata/communitiesData';
-
 import AppContext from '../context/app-context';
 import Pagination from "material-ui-flat-pagination";
-
 import {/* testSquare, */ loadEndpointUsingAccessKey} from '../lib/DataTools';
-//import axios from 'axios';
 
 const Communities = (props) => {
   const context = useContext(AppContext);
@@ -20,27 +16,19 @@ const Communities = (props) => {
   }, [context.communitiesPage]);
 
     //  TODO: What is best way to do this?
-    const columns = communitiesColumns;
+  const columns = communitiesColumns;
 
-    // TODO:  Try point-free, use spread op syntax
-    const rows = context.communitiesData.data.map(community=>{
-      return {
-        division: community.division.division,
-        community_code: community.code,
-        community_name: community.name,
-        budget_neighborhood: community.division.division_name,
-      };
-    });
+  // TODO:  This should probably go in datatools as a transformResponse for back end.  Pass into loadEndpointUsingAccessKey() ?
+  const rows = context.communitiesData.data;
 
+  console.info (`Communities rendering page ${context.communitiesPage} with data `, rows);
 
- console.info (`Communities rendering page ${context.communitiesPage} with data `, rows);
-
-const [clickCount, setClickCount] = useState(0);
+  const [clickCount, setClickCount] = useState(0);
 
 //console.info ('Communities page is ', context.communitiesPage, context.omniboxFilter);
 return (
 
- <React.Fragment>
+ <>
        Dev Extreme React Grid <strong>https://devexpress.github.io/devextreme-reactive/react/grid/ </strong>
       <span onClick={()=>{console.info(context.communitiesData); debugger;}}>Debug</span> 
   <Grid
@@ -98,7 +86,7 @@ setClickCount(clickCount + 1);
 
 
     }}>/test</span>
-  </React.Fragment>
+  </>
 )};
 
 

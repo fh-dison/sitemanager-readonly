@@ -53,13 +53,31 @@ const GlobalState = props => {
     dispatch({ type: UPDATE_COMMUNITIES_PAGE, target: page });
   }
 
+  // Experimental communities formatter
+  const communitiesDataFormatter = (data) => {
+
+    if (! data.data || ! Array.isArray(data.data)) {
+      return data;
+    }
+    const formatted = data.data.map(community=>{
+      return {
+        division: community.division.division,
+        community_code: community.code,
+        community_name: community.name,
+        budget_neighborhood: community.division.division_name,
+      };
+    });
+    return {...data, data: formatted}
+  }
+ 
+
   /**
    * Synchronizes current Communities data via REST API to current page (communitiesPage)
    */
   const syncCurrentCommunitiesPage = () => {
     if (appState.lastFetchedCommunitiesPage !== appState.communitiesPage && appState.accessToken.length > 0) {
        const url = `/api/v3/communities?per_page=10&includes=division&page=${appState.communitiesPage}`;
-       loadEndpointUsingAccessKey(url, appState.accessToken)
+       loadEndpointUsingAccessKey(url, appState.accessToken, communitiesDataFormatter)
       .then(response => {
         if (response.status === REST_API_SUCCESS) {
           dispatch({ type: UPDATE_COMMUNITIES_DATA, target: response.data});  
