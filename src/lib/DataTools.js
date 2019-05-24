@@ -117,20 +117,6 @@ export const loadEndpointUsingAccessKey = async (endpoint, accessToken) => {
 
   const server = 'https://rest-staging.fischermgmt.com';
   const url = server + endpoint;
-
-
-  /* 
-  async function loadAttempt(url, token) {
-    console.info('loadAttempt() with token', token);
-    let result = {status: -1};
-    try {
-      result = await getDataAxios(url, token);
-    } catch (err) {
-      throw Error(err);
-    }
-    return result;
-  } */
-
   let retryCount = 0;
   let success = false;
   while (! success && retryCount < MAX_REST_RETRIES) {
@@ -263,6 +249,22 @@ export const loadEndpointUsingAccessKey = async (endpoint, accessToken) => {
       //   });
       // });  
     }); */
+
+
+
+
+  /* 
+  async function loadAttempt(url, token) {
+    console.info('loadAttempt() with token', token);
+    let result = {status: -1};
+    try {
+      result = await getDataAxios(url, token);
+    } catch (err) {
+      throw Error(err);
+    }
+    return result;
+  } */
+
 
 
 // Trivial export for setting up / verifying Jest testing 

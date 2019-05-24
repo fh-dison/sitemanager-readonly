@@ -24,7 +24,7 @@ const Communities = (props) => {
     //const rows = communitiesRows;
     const columns = communitiesColumns;
 //debugger;
-    // TODO:  Try point-free
+    // TODO:  Try point-free, use spread op syntax
     const rows = context.communitiesData.data.map(community=>{
       return {
         division: community.division.division,
@@ -33,6 +33,7 @@ const Communities = (props) => {
         budget_neighborhood: community.division.division_name,
       };
     });
+
 /* const info = {
   page: context.communitiesData.page,
   data: context.communitiesData.data
