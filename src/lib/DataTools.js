@@ -103,11 +103,9 @@ export const loadEndpointUsingAccessKey = async (endpoint, accessToken) => {
     await axios.post('https://auth-staging.fischermgmt.com/oauth/token', params)
       
     .then (response => {
-   //   console.info('getRenewedAccessToken() yielded', response.data.access_token);
       result.accessToken = response.data.access_token;
     })
     .catch(error => {
-  //    console.info('getRenewedAccessToken() yielded', 'REST_API_ERROR');
       result.status = REST_API_ERROR;        
     });
 
@@ -126,7 +124,7 @@ export const loadEndpointUsingAccessKey = async (endpoint, accessToken) => {
       const accessResponse = await getRenewedAccessToken();
       if (accessResponse.status === REST_API_SUCCESS) {
         accessToken = accessResponse.accessToken;
-        console.info('Got a 403 on endpoint.. New access token is', accessToken);
+     //   console.info('Got a 403 on endpoint.. New access token [last 30 chars]', accessToken.substring(accessToken.length - 30, accessToken.length));
         finalResult.accessToken = accessToken;
       }
     } else if (response.status === REST_API_SUCCESS) {
