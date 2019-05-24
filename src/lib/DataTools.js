@@ -50,8 +50,13 @@ export const loadEndpointUsingAccessKey = async (endpoint, accessToken) => {
     accessToken: accessToken,
     data: [],
   };
-
+ 
+  // TODO:  Formalize exception handling, esp. for transformResponse() handler
   const getDataAxios = async (url, token) => {
+
+    console.info(`getDataAxios() with url ${url} token: ${token.substring(token.length - 30, token.length)}`);
+
+
     let result = {
       status: REST_API_SUCCESS,
       data: ''
@@ -65,8 +70,7 @@ export const loadEndpointUsingAccessKey = async (endpoint, accessToken) => {
       transformResponse: [dataParser],
     })
     .then(response => {
-      console.info(`getDataAxios() url ${url} success..`);
-      console.info ('data ', response.data);
+      console.info(`getDataAxios() SUCCESS `);
       result.data = response.data;
     })
     .catch(error => {
@@ -95,17 +99,15 @@ export const loadEndpointUsingAccessKey = async (endpoint, accessToken) => {
     params.append('client_id', '43');
     params.append('client_secret', '8g66LF6bQMQWNBl0F9ZCUCyxVz1VsfQtUPyIhgeJ');
     params.append('username', 'dison');
-
-
-    
+  
     await axios.post('https://auth-staging.fischermgmt.com/oauth/token', params)
       
     .then (response => {
-      console.info('getRenewedAccessToken() yielded', response.data.access_token);
+   //   console.info('getRenewedAccessToken() yielded', response.data.access_token);
       result.accessToken = response.data.access_token;
     })
     .catch(error => {
-      console.info('getRenewedAccessToken() yielded', 'REST_API_ERROR');
+  //    console.info('getRenewedAccessToken() yielded', 'REST_API_ERROR');
       result.status = REST_API_ERROR;        
     });
 
@@ -116,7 +118,8 @@ export const loadEndpointUsingAccessKey = async (endpoint, accessToken) => {
   const server = 'https://rest-staging.fischermgmt.com';
   const url = server + endpoint;
 
-  // TODO:  This wrapper should go away, just call as getDataAxios()
+
+  /* 
   async function loadAttempt(url, token) {
     console.info('loadAttempt() with token', token);
     let result = {status: -1};
@@ -126,12 +129,12 @@ export const loadEndpointUsingAccessKey = async (endpoint, accessToken) => {
       throw Error(err);
     }
     return result;
-  }
+  } */
 
   let retryCount = 0;
   let success = false;
   while (! success && retryCount < MAX_REST_RETRIES) {
-    const response = await loadAttempt(url, accessToken);
+    const response = await getDataAxios(url, accessToken);
     finalResult.status = response.status;
     if (response.status === REST_ACCESS_TOKEN_ERROR) {
       const accessResponse = await getRenewedAccessToken();
@@ -156,39 +159,8 @@ export const loadEndpointUsingAccessKey = async (endpoint, accessToken) => {
 
 //--------------------------------------------------------------------------------------------------------------------
 
-/* const getRenewedAccessToken = () => {
-
-  let result = {
-    error: REST_API_SUCCESS,
-    accessToken: ''
-  }
-
-  const params = new URLSearchParams();
-  params.append('grant_type', 'client_credentials');
-  params.append('client_id', '43');
-  params.append('client_secret', '8g66LF6bQMQWNBl0F9ZCUCyxVz1VsfQtUPyIhgeJ');
-
-  axios.post('https://auth-staging.fischermgmt.com/oauth/token', params)
-
-//    axios({
-//     method: "post",
-//     url: "https://auth-staging.fischermgmt.com/oauth/token",
-//     data: params,
-//  //   transformResponse: [dataParser, dataFormatter],
-//   })
 
 
-  .then (response => {
-    result.accessToken = response.access_token;
-  })
-  .catch(error => {
-    result.error = REST_API_ERROR;
-
-     
-  }); */
-
-
- 
 
 /*
     Overview:

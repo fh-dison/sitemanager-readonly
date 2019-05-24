@@ -71,8 +71,9 @@ return (
 
 //testSquare(clickCount);
 console.clear();
-loadEndpointUsingAccessKey('/api/v3/communities?page=1', context.accessToken).then(response => {
-  debugger;
+loadEndpointUsingAccessKey('/api/v3/communities?per_page=10&page=1', context.accessToken).then(response => {
+  context.setAccessToken(response.accessToken); 
+  console.info('Data is ', response.data);
 
 });
 

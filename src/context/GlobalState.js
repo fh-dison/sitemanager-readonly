@@ -31,6 +31,7 @@ const GlobalState = props => {
    * @param {string=} token 
    */
   const setAccessToken = token => {
+    if (token === appState.accessToken) return;
     dispatch({ type: SET_ACCESS_TOKEN, target: token });
   }
 
@@ -56,12 +57,13 @@ const GlobalState = props => {
   const syncCurrentCommunitiesPage = () => {
 
     if (appState.lastFetchedCommunitiesPage !== appState.communitiesPage && appState.accessToken.length > 0) {
-       loadEndpointUsingAccessKey('/api/v3/communities?page=1', appState.accessToken)
+       loadEndpointUsingAccessKey('/api/v3/communities?per_page=10&page=1', appState.accessToken)
       .then(response => {
         if (response.status === REST_API_SUCCESS) {
           dispatch({ type: UPDATE_COMMUNITIES_DATA, target: response.data});  
           dispatch({ type: UPDATE_LAST_FETCHED_COMMUNITIES_PAGE, target: appState.communitiesPage});
           if (response.accessToken !== appState.accessToken) {
+            console.info('Updating accessToken in Global State', response.accessToken.substring(response.accessToken.length - 30, response.accessToken.length));
             dispatch({ type: SET_ACCESS_TOKEN, target: response.accessToken });
           }
         } else {
