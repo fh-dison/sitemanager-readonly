@@ -23,7 +23,7 @@ const Communities = (props) => {
   // TODO: Move to React Context 
     //const rows = communitiesRows;
     const columns = communitiesColumns;
-debugger;
+//debugger;
     // TODO:  Try point-free
     const rows = context.communitiesData.data.map(community=>{
       return {
@@ -37,11 +37,13 @@ debugger;
   page: context.communitiesData.page,
   data: context.communitiesData.data
 };
-console.info ('Communities rendering with ', info, 'Access Token is', context.accessToken.substring(0, 50) + '...'); */
+ */
  
+ console.info (`Communities rendering page ${context.communitiesPage} with data `, rows);
+
 const [clickCount, setClickCount] = useState(0);
 
-console.info ('Communities page is ', context.communitiesPage, context.omniboxFilter);
+//console.info ('Communities page is ', context.communitiesPage, context.omniboxFilter);
 return (
 
  <React.Fragment>
