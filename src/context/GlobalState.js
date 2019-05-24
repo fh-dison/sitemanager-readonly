@@ -8,7 +8,9 @@ import {
   SET_ACCESS_TOKEN,
 } from './actions';
 import appReducer from './reducers';
-import axios from 'axios';
+import {
+  REST_API_SUCCESS,
+} from 'lib/RestStatus';
 import {loadEndpointUsingAccessKey} from '../lib/DataTools';
 
 
@@ -53,19 +55,18 @@ const GlobalState = props => {
    */
   const syncCurrentCommunitiesPage = () => {
 
-   // console.info ('syncCurrentCommunitiesPage()', appState.communitiesPage, appState.lastFetchedCommunitiesPage);
-
-    if (appState.lastFetchedPage !== appState.communitiesPage && appState.accessToken.length > 0) {
-
-
-     // axios.get(`https://reqres.in/api/users?page=${appState.communitiesPage}`)
+    if (appState.lastFetchedCommunitiesPage !== appState.communitiesPage && appState.accessToken.length > 0) {
        loadEndpointUsingAccessKey('/api/v3/communities?page=1', appState.accessToken)
       .then(response => {
-        debugger;
-   //     console.info ('getCurrentCommunitiesData() promise resolving with', response.data, 'lastFetched set to ', appState.communitiesPage);
-   if (! response) return;
-        dispatch({ type: UPDATE_COMMUNITIES_DATA, target: response.data});  
-        dispatch({ type: UPDATE_LAST_FETCHED_COMMUNITIES_PAGE, target: appState.communitiesPage});
+        if (response.status === REST_API_SUCCESS) {
+          dispatch({ type: UPDATE_COMMUNITIES_DATA, target: response.data});  
+          dispatch({ type: UPDATE_LAST_FETCHED_COMMUNITIES_PAGE, target: appState.communitiesPage});
+          if (response.accessToken !== appState.accessToken) {
+            dispatch({ type: SET_ACCESS_TOKEN, target: response.accessToken });
+          }
+        } else {
+          // Something for UI to display an error message
+        }
       })
     }
   }

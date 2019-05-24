@@ -1,6 +1,10 @@
 import PubSub from 'pubsub-js';
 import axios from 'axios';
-
+import {
+  REST_API_SUCCESS,
+  REST_API_ERROR,
+  REST_ACCESS_TOKEN_ERROR,
+} from './RestStatus';
 
 // Prototype data handler for server input data
 //  Can use nested try/catch etc for advanced error handling
@@ -29,10 +33,9 @@ export const dataFormatter = (data) => {
     //  Mapping error, some other error
   }
 }
-const REST_API_SUCCESS          = 0;
-const REST_API_ERROR            = -4;
-const REST_ACCESS_TOKEN_ERROR   = -5;
 
+
+// For debugging only
 export const loadEndpointUsingAccessKey2 = async (endpoint, key) => {
   return {status: 0};
 }
@@ -42,9 +45,13 @@ export const loadEndpointUsingAccessKey2 = async (endpoint, key) => {
 export const loadEndpointUsingAccessKey = async (endpoint, accessToken) => {
 
   const MAX_REST_RETRIES = 3;
-  let finalResult = {status: REST_API_ERROR};
+  let finalResult = {
+    status: REST_API_SUCCESS,
+    accessToken: accessToken,
+    data: [],
+  };
 
-  const getDataAxios = async (url, accessKey) => {
+  const getDataAxios = async (url, token) => {
     let result = {
       status: REST_API_SUCCESS,
       data: ''
@@ -53,21 +60,21 @@ export const loadEndpointUsingAccessKey = async (endpoint, accessToken) => {
       method: "get",
       url: url,
       headers: {
-        'Authorization': 'Bearer ' + accessToken,
+        'Authorization': 'Bearer ' + token,
       },
       transformResponse: [dataParser],
     })
     .then(response => {
-      console.info('getDataAxios() yielded', response.data);
+      console.info(`getDataAxios() url ${url} success..`);
+      console.info ('data ', response.data);
       result.data = response.data;
     })
     .catch(error => {
       result.status = (error.response.status === 403 ? REST_ACCESS_TOKEN_ERROR : REST_API_ERROR);
       {
-      let msg;
-      msg = (error.response.status === 403 ? 'REST_ACCESS_TOKEN_ERROR' : 'REST_API_ERROR');
-    
-      console.info('getDataAxios() yielded', msg);
+        let msg;
+        msg = (error.response.status === 403 ? 'REST_ACCESS_TOKEN_ERROR' : 'REST_API_ERROR'); 
+        console.info(`getDataAxios() url ${url} yielded ${msg}`);
       }
     });
          
@@ -83,10 +90,14 @@ export const loadEndpointUsingAccessKey = async (endpoint, accessToken) => {
     }
   
     const params = new URLSearchParams();
-    params.append('grant_type', 'client_credentials');
+    // Source: Postman config for Get Token, V3
+    params.append('grant_type', 'username');
     params.append('client_id', '43');
     params.append('client_secret', '8g66LF6bQMQWNBl0F9ZCUCyxVz1VsfQtUPyIhgeJ');
-  
+    params.append('username', 'dison');
+
+
+    
     await axios.post('https://auth-staging.fischermgmt.com/oauth/token', params)
       
     .then (response => {
@@ -106,36 +117,39 @@ export const loadEndpointUsingAccessKey = async (endpoint, accessToken) => {
   const url = server + endpoint;
 
   // TODO:  This wrapper should go away, just call as getDataAxios()
-  async function loadAttempt(url, accessKey) {
+  async function loadAttempt(url, token) {
+    console.info('loadAttempt() with token', token);
     let result = {status: -1};
     try {
-      result = await getDataAxios(url, accessKey);
+      result = await getDataAxios(url, token);
     } catch (err) {
       throw Error(err);
     }
     return result;
   }
- // debugger;
 
   let retryCount = 0;
   let success = false;
   while (! success && retryCount < MAX_REST_RETRIES) {
-    const result = await loadAttempt(url, accessToken);
-
-    if (result.status === REST_ACCESS_TOKEN_ERROR) {
-      const accessResult = await  getRenewedAccessToken();
-      console.info('Got a 403.. New access token is', accessResult.accessToken);
-    } else if (result.status === REST_API_SUCCESS) {
+    const response = await loadAttempt(url, accessToken);
+    finalResult.status = response.status;
+    if (response.status === REST_ACCESS_TOKEN_ERROR) {
+      const accessResponse = await getRenewedAccessToken();
+      if (accessResponse.status === REST_API_SUCCESS) {
+        accessToken = accessResponse.accessToken;
+        console.info('Got a 403 on endpoint.. New access token is', accessToken);
+        finalResult.accessToken = accessToken;
+      }
+    } else if (response.status === REST_API_SUCCESS) {
       success = true;
-      finalResult = result.data;
+      finalResult.data = response.data;
     }
     retryCount++;
     console.info('retryCount is now', retryCount);
-   // debugger;
   }
-    
-    return finalResult;
-  }
+
+  return finalResult;
+}
 
  
 

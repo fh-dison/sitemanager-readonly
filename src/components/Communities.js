@@ -70,7 +70,7 @@ return (
     <span onClick={e=>{
 
 //testSquare(clickCount);
-
+console.clear();
 loadEndpointUsingAccessKey('/api/v3/communities?page=1', context.accessToken).then(response => {
   debugger;
 
