@@ -57,7 +57,8 @@ const GlobalState = props => {
   const syncCurrentCommunitiesPage = () => {
 
     if (appState.lastFetchedCommunitiesPage !== appState.communitiesPage && appState.accessToken.length > 0) {
-       loadEndpointUsingAccessKey('/api/v3/communities?per_page=10&page=1', appState.accessToken)
+       const url = `/api/v3/communities?per_page=10&page=${appState.communitiesPage}`;
+       loadEndpointUsingAccessKey(url, appState.accessToken)
       .then(response => {
         if (response.status === REST_API_SUCCESS) {
           dispatch({ type: UPDATE_COMMUNITIES_DATA, target: response.data});  
