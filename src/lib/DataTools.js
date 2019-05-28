@@ -95,7 +95,7 @@ function dataParser (data, headers) {
   const url = server + endpoint;
   let retryCount = 0;
   let success = false;
-  while (! success && retryCount < MAX_REST_RETRIES) {
+  while (! success && retryCount ++<  MAX_REST_RETRIES) {
     const response = await endpointWithAxios(url, accessToken, formatter);
     finalResult.status = response.status;
     if (response.status === REST_ACCESS_TOKEN_ERROR) {
@@ -108,7 +108,7 @@ function dataParser (data, headers) {
       success = true;
       finalResult.data = response.data;
     }
-    retryCount++;
+    // Just debugging
     if (retryCount > 1) {
       console.info('retryCount is now', retryCount);
     }

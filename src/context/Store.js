@@ -13,7 +13,8 @@ import {
 } from 'lib/RestStatus';
 import {endpointActionUsingAccessToken} from '../lib/DataTools';
 
-const Store = props => {
+//const Store = props => {
+function Store (props) {
  
   const [appState, dispatch] = useReducer(appReducer, { 
     omniboxFilter: 'none',
