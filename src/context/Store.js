@@ -28,7 +28,7 @@ const Store = props => {
    * Setter for accessToken
    * @param {string=} token 
    */
-  const setAccessToken = token => {
+  function setAccessToken (token) {
     // Pre-initialize accessToken to value from URL bar
     if (appState.accessToken.length === 0) appState.accessToken = token;
     if (token === appState.accessToken) return;
@@ -40,7 +40,7 @@ const Store = props => {
    * Setter for Omnibox
    * @param {string=} omnibox 
    */
-  const setOmniboxFilter = omnibox => {
+  function setOmniboxFilter (omnibox) {
     dispatch({ type: SET_OMNIBOX_FILTER, target: omnibox });
   }
     
@@ -48,7 +48,7 @@ const Store = props => {
    * Setter for Communities Page
    * @param {integer=} page 
    */
-  const setCommunitiesPage = page => {
+  function setCommunitiesPage (page) {
     dispatch({ type: SET_COMMUNITIES_PAGE, target: page });
   }
 
@@ -73,7 +73,7 @@ const Store = props => {
   /**
    * Synchronizes current Communities data via REST API to current page (communitiesPage)
    */
-  const syncCurrentCommunitiesPage = () => {
+  function syncCurrentCommunitiesPage() {
     // Just debugging
     if (appState.accessToken.length === 0) {
       console.clear();
