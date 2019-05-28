@@ -13,7 +13,7 @@ const initialState = {
 const appReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_OMNIBOX_FILTER:
-      return { ...state, omniboxFilter: action.target};
+      return { ...state, omniboxFilter: action.target, needSync: true};
     case SET_COMMUNITIES_PAGE:
       return { ...state, communitiesPage: action.target};
     case UPDATE_LAST_FETCHED_COMMUNITIES_PAGE:

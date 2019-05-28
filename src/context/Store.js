@@ -23,6 +23,7 @@ function Store (props) {
     fetchCurrentCommunitiesData: () =>{},
     lastFetchedCommunitiesPage: -1,
     accessToken: '',
+    needSync: false,
   });
 
   /**
@@ -72,7 +73,6 @@ function Store (props) {
  
 
 function buildV3URL(params) {
-  const urlBase = '/api/v3/';
 
   const defaultURLBuilder = (htmlParameter) => {
     return `${htmlParameter}=${ params[htmlParameter]}&`;
@@ -107,8 +107,6 @@ function buildV3URL(params) {
     let filters = [];
     if (appState.omniboxFilter.length >= 2) {
       filters.push({column: 'name', operator: 'LIKE', value: `${appState.omniboxFilter}%`});
-      // TODO:  Is this the right place and way?  Maybe what's needed is a needSync flag of some kind
-      appState.lastFetchedCommunitiesPage = -1;
     }
     let urlParameters = {
       per_page: 10,
@@ -133,7 +131,7 @@ function buildV3URL(params) {
     const url2 =   setupEndpoint('/api/v3/communities');
     console.info('Latest url is', url2);
 
-    if (appState.lastFetchedCommunitiesPage !== appState.communitiesPage) {
+    if (appState.needSync || appState.lastFetchedCommunitiesPage !== appState.communitiesPage) {
      //  const url = `/api/v3/communities?per_page=10&includes=division&page=${appState.communitiesPage}`;
        endpointActionUsingAccessToken(url2, appState.accessToken, setAccessToken, communitiesDataFormatter)
       .then(response => {
