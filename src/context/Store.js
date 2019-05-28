@@ -17,7 +17,7 @@ import {endpointActionUsingAccessToken} from '../lib/DataTools';
 function Store (props) {
  
   const [appState, dispatch] = useReducer(appReducer, { 
-    omniboxFilter: 'none',
+    omniboxFilter: '',
     communitiesPage: 1,
     communitiesData: {data: []},
     fetchCurrentCommunitiesData: () =>{},
@@ -71,6 +71,56 @@ function Store (props) {
   }
  
 
+function buildV3URL(params) {
+  const urlBase = '/api/v3/';
+
+  const defaultURLBuilder = (htmlParameter) => {
+    return `${htmlParameter}=${ params[htmlParameter]}&`;
+  };
+
+  const customURLBuilders = {
+ 
+    filters: (filters) => {
+      return params[filters].reduce((acc, curr) => {
+        return acc + `filters[${curr.column}][operator]=${curr.operator}&filters[${curr.column}][value]=${curr.value}&`;
+      }, '');
+    },
+  }
+
+  const keyToURLString = (acc, curr) => {
+     const builder = (customURLBuilders.hasOwnProperty(curr)) ? customURLBuilders[curr] : defaultURLBuilder;
+     return acc + builder(curr);
+  }
+
+  return  '?' + Object.keys(params).reduce(keyToURLString, '').slice(0, -1)
+}
+
+
+
+  function setupEndpoint(preamble) {
+
+    // Helper for urlParameters
+    function containsValue(parameter) {
+      return (typeof parameter !== 'undefined' && parameter !== '');
+    }
+
+    let filters = [];
+    if (appState.omniboxFilter.length >= 2) {
+      filters.push({column: 'name', operator: 'LIKE', value: `${appState.omniboxFilter}%`});
+      // TODO:  Is this the right place and way?  Maybe what's needed is a needSync flag of some kind
+      appState.lastFetchedCommunitiesPage = -1;
+    }
+    let urlParameters = {
+      per_page: 10,
+      includes: 'division',
+      page: appState.communitiesPage,
+      filters: filters,
+    };
+
+    return preamble +  buildV3URL(urlParameters); 
+  }
+
+
   /**
    * Synchronizes current Communities data via REST API to current page (communitiesPage)
    */
@@ -80,13 +130,27 @@ function Store (props) {
       console.clear();
       console.info('syncCurrentCommunitiesPage() got zero length token');
     }
+    const url2 =   setupEndpoint('/api/v3/communities');
+    console.info('Latest url is', url2);
+
     if (appState.lastFetchedCommunitiesPage !== appState.communitiesPage) {
-       const url = `/api/v3/communities?per_page=10&includes=division&page=${appState.communitiesPage}`;
-       endpointActionUsingAccessToken(url, appState.accessToken, setAccessToken, communitiesDataFormatter)
+     //  const url = `/api/v3/communities?per_page=10&includes=division&page=${appState.communitiesPage}`;
+       endpointActionUsingAccessToken(url2, appState.accessToken, setAccessToken, communitiesDataFormatter)
       .then(response => {
         if (response.status === REST_API_SUCCESS) {
           dispatch({ type: UPDATE_COMMUNITIES_DATA, target: response.data});  
           dispatch({ type: UPDATE_LAST_FETCHED_COMMUNITIES_PAGE, target: appState.communitiesPage});
+
+        //  debugger;
+// TODO:  Is this test needed?
+          if (response.data.current_page) {
+            console.info('sync setting comm. page to current_page', response.data.current_page);
+
+            dispatch({ type: SET_COMMUNITIES_PAGE, target: response.data.current_page });
+
+          }
+
+          // TODO: Need page number info from API call
         } else {
           // Something for UI to display an error message
         }

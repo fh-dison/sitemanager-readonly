@@ -37,6 +37,7 @@ function dataParser (data, headers) {
  
   // TODO:  Formalize exception handling, esp. for transformResponse() handler.  Future version support action GET/POST/PUT as a parameter
   async function endpointWithAxios (url, token, formatter) {
+    console.info('endpointWithAxios()', url);
     let result = {
       status: REST_API_SUCCESS,
       data: ''

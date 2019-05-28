@@ -13,7 +13,7 @@ const Communities = (props) => {
   useEffect(() => {
      context.syncCurrentCommunitiesPage();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [context.communitiesPage]);
+  }, [context.communitiesPage, context.omniboxFilter]);
 
     //  TODO: What is best way to do this?
   const columns = communitiesColumns;
@@ -22,7 +22,7 @@ const Communities = (props) => {
   const rows = context.communitiesData.data;
 
   //console.info (`Communities rendering page ${context.communitiesPage} with data `, rows);
-
+console.info('Communities rendering..');
   const [clickCount, setClickCount] = useState(0);
 
 return (
@@ -49,7 +49,7 @@ return (
   <br/>
     Total {rows.length}
     <br/>
-    Filter {context.omniboxFilter}
+    Filter {context.omniboxFilter.length === 0 ? 'none ' : context.omniboxFilter}
     <br/>
     Page {context.communitiesPage}
     <br/>
