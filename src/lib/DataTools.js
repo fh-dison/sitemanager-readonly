@@ -43,7 +43,7 @@ export const loadEndpointUsingAccessKey2 = async (endpoint, key) => {
 
 // Filtering and URLS should have already been set up by now
 // TODO:  Exceptions handling
-export const loadEndpointUsingAccessKey = async (endpoint, accessToken, formatter = data => data) => {
+export const loadEndpointUsingAccessKey = async (endpoint, accessToken, setAccessToken, formatter = data => data) => {
 
   const MAX_REST_RETRIES = 3;
   let finalResult = {
@@ -55,7 +55,7 @@ export const loadEndpointUsingAccessKey = async (endpoint, accessToken, formatte
   // TODO:  Formalize exception handling, esp. for transformResponse() handler 
   const getDataAxios = async (url, token, formatter) => {
 
-    console.info(`getDataAxios() with url ${url} token: ${token.substring(token.length - 30, token.length)}`);
+   // console.info(`getDataAxios() with url ${url} token: ${token.substring(token.length - 30, token.length)}`);
 
 
     let result = {
@@ -76,9 +76,9 @@ export const loadEndpointUsingAccessKey = async (endpoint, accessToken, formatte
     })
     .catch(error => {
       result.status = (error.response.status === 403 ? REST_ACCESS_TOKEN_ERROR : REST_API_ERROR);
+      // Just debugging info
       {
-        let msg;
-        msg = (error.response.status === 403 ? 'REST_ACCESS_TOKEN_ERROR' : 'REST_API_ERROR'); 
+        let msg = (error.response.status === 403 ? 'REST_ACCESS_TOKEN_ERROR' : 'REST_API_ERROR'); 
         console.info(`getDataAxios() url ${url} yielded ${msg}`);
       }
     });
@@ -125,15 +125,16 @@ export const loadEndpointUsingAccessKey = async (endpoint, accessToken, formatte
       const accessResponse = await getRenewedAccessToken();
       if (accessResponse.status === REST_API_SUCCESS) {
         accessToken = accessResponse.accessToken;
-     //   console.info('Got a 403 on endpoint.. New access token [last 30 chars]', accessToken.substring(accessToken.length - 30, accessToken.length));
-        finalResult.accessToken = accessToken;
+        setAccessToken(accessToken);
       }
     } else if (response.status === REST_API_SUCCESS) {
       success = true;
       finalResult.data = response.data;
     }
     retryCount++;
-    console.info('retryCount is now', retryCount);
+    if (retryCount > 1) {
+      console.info('retryCount is now', retryCount);
+    }
   }
 
   return finalResult;

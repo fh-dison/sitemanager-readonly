@@ -4,7 +4,7 @@ import { Grid, Table, /* PagingPanel, */ TableHeaderRow } from '@devexpress/dx-r
 import {communitiesColumns} from 'mockdata/communitiesData';
 import AppContext from '../context/app-context';
 import Pagination from "material-ui-flat-pagination";
-import {/* testSquare, */ loadEndpointUsingAccessKey} from '../lib/DataTools';
+import { loadEndpointUsingAccessKey} from '../lib/DataTools';
 
 const Communities = (props) => {
   const context = useContext(AppContext);
@@ -21,13 +21,11 @@ const Communities = (props) => {
   // TODO:  This should probably go in datatools as a transformResponse for back end.  Pass into loadEndpointUsingAccessKey() ?
   const rows = context.communitiesData.data;
 
-  console.info (`Communities rendering page ${context.communitiesPage} with data `, rows);
+  //console.info (`Communities rendering page ${context.communitiesPage} with data `, rows);
 
   const [clickCount, setClickCount] = useState(0);
 
-//console.info ('Communities page is ', context.communitiesPage, context.omniboxFilter);
 return (
-
  <>
        Dev Extreme React Grid <strong>https://devexpress.github.io/devextreme-reactive/react/grid/ </strong>
       <span onClick={()=>{console.info(context.communitiesData); debugger;}}>Debug</span> 
@@ -69,8 +67,7 @@ return (
     
     
     <span onClick={e=>{
-
-//testSquare(clickCount);
+// Just debugging
 console.clear();
 loadEndpointUsingAccessKey('/api/v3/communities?per_page=10&includes=division&page=1', context.accessToken).then(response => {
   context.setAccessToken(response.accessToken); 
