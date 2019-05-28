@@ -79,7 +79,6 @@ function buildV3URL(params) {
   };
 
   const customURLBuilders = {
- 
     filters: (filters) => {
       return params[filters].reduce((acc, curr) => {
         return acc + `filters[${curr.column}][operator]=${curr.operator}&filters[${curr.column}][value]=${curr.value}&`;
@@ -105,8 +104,10 @@ function buildV3URL(params) {
     }
 
     let filters = [];
-    if (appState.omniboxFilter.length >= 2) {
-      filters.push({column: 'name', operator: 'LIKE', value: `${appState.omniboxFilter}%`});
+    if (appState.omniboxFilter.length >= 1) {
+     filters.push({column: 'name', operator: 'LIKE', value: `${appState.omniboxFilter}%`});
+ //    filters.push({column: 'code', operator: 'LIKE', value: `${appState.omniboxFilter}%`});
+
     }
     let urlParameters = {
       per_page: 10,
@@ -128,12 +129,9 @@ function buildV3URL(params) {
       console.clear();
       console.info('syncCurrentCommunitiesPage() got zero length token');
     }
-    const url2 =   setupEndpoint('/api/v3/communities');
-    console.info('Latest url is', url2);
 
     if (appState.needSync || appState.lastFetchedCommunitiesPage !== appState.communitiesPage) {
-     //  const url = `/api/v3/communities?per_page=10&includes=division&page=${appState.communitiesPage}`;
-       endpointActionUsingAccessToken(url2, appState.accessToken, setAccessToken, communitiesDataFormatter)
+      endpointActionUsingAccessToken(setupEndpoint('/api/v3/communities'), appState.accessToken, setAccessToken, communitiesDataFormatter)
       .then(response => {
         if (response.status === REST_API_SUCCESS) {
           dispatch({ type: UPDATE_COMMUNITIES_DATA, target: response.data});  
@@ -141,12 +139,11 @@ function buildV3URL(params) {
 
         //  debugger;
 // TODO:  Is this test needed?
-          if (response.data.current_page) {
+          //if (response.data.current_page) {
             console.info('sync setting comm. page to current_page', response.data.current_page);
-
             dispatch({ type: SET_COMMUNITIES_PAGE, target: response.data.current_page });
 
-          }
+          //}
 
           // TODO: Need page number info from API call
         } else {
@@ -168,6 +165,7 @@ function buildV3URL(params) {
         lastFetchedCommunitiesPage: appState.lastFetchedCommunitiesPage,
         setAccessToken: setAccessToken,
         accessToken: appState.accessToken,
+        needSync: appState.needSync,
       }}
     >
     {props.children}
