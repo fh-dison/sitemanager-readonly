@@ -11,7 +11,7 @@ import appReducer from './reducers';
 import {
   REST_API_SUCCESS,
 } from 'lib/RestStatus';
-import {loadEndpointUsingAccessToken} from '../lib/DataTools';
+import {endpointActionUsingAccessToken} from '../lib/DataTools';
 
 const Store = props => {
  
@@ -81,7 +81,7 @@ const Store = props => {
     }
     if (appState.lastFetchedCommunitiesPage !== appState.communitiesPage) {
        const url = `/api/v3/communities?per_page=10&includes=division&page=${appState.communitiesPage}`;
-       loadEndpointUsingAccessToken(url, appState.accessToken, setAccessToken, communitiesDataFormatter)
+       endpointActionUsingAccessToken(url, appState.accessToken, setAccessToken, communitiesDataFormatter)
       .then(response => {
         if (response.status === REST_API_SUCCESS) {
           dispatch({ type: UPDATE_COMMUNITIES_DATA, target: response.data});  

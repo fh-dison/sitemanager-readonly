@@ -22,24 +22,12 @@ export const dataParser = (data, headers) => {
   }
 }
 
- 
-/* 
-export const dataFormatter = (data) => {
-  try {
-    const values = data.map(v => {
-      return [v.email, v.name, v.phone];
-    });
-    return [['Email', 'Name', 'Phone'], ...values];
-  } catch (e) {
-    //  Mapping error, some other error
-  }
-}
- */
+
 
 
 // Filtering and URLS should have already been set up by now
 // TODO:  Exceptions handling
-export const loadEndpointUsingAccessToken = async (endpoint, accessToken, setAccessToken, formatter = data => data) => {
+export const endpointActionUsingAccessToken = async (endpoint, accessToken, setAccessToken, formatter = data => data) => {
 
   const MAX_REST_RETRIES = 3;
   let finalResult = {

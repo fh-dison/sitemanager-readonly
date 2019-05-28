@@ -4,7 +4,7 @@ import { Grid, Table, /* PagingPanel, */ TableHeaderRow } from '@devexpress/dx-r
 import {communitiesColumns} from 'mockdata/communitiesData';
 import AppContext from '../context/app-context';
 import Pagination from "material-ui-flat-pagination";
-import { loadEndpointUsingAccessToken} from '../lib/DataTools';
+import { endpointActionUsingAccessToken} from '../lib/DataTools';
 
 const Communities = (props) => {
   const context = useContext(AppContext);
@@ -18,7 +18,7 @@ const Communities = (props) => {
     //  TODO: What is best way to do this?
   const columns = communitiesColumns;
 
-  // TODO:  This should probably go in datatools as a transformResponse for back end.  Pass into loadEndpointUsingAccessToken() ?
+  // TODO:  This should probably go in datatools as a transformResponse for back end.   ?
   const rows = context.communitiesData.data;
 
   //console.info (`Communities rendering page ${context.communitiesPage} with data `, rows);
@@ -69,7 +69,7 @@ return (
     <span onClick={e=>{
 // Just debugging
 console.clear();
-loadEndpointUsingAccessToken('/api/v3/communities?per_page=10&includes=division&page=1', context.accessToken).then(response => {
+endpointActionUsingAccessToken('/api/v3/communities?per_page=10&includes=division&page=1', context.accessToken).then(response => {
   context.setAccessToken(response.accessToken); 
   console.info('Data is ', response.data);
 
