@@ -13,9 +13,7 @@ import {
 } from 'lib/RestStatus';
 import {loadEndpointUsingAccessToken} from '../lib/DataTools';
 
-
-// Could be named Store
-const GlobalState = props => {
+const Store = props => {
  
   const [appState, dispatch] = useReducer(appReducer, { 
     omniboxFilter: 'none',
@@ -109,4 +107,4 @@ const GlobalState = props => {
   );
 };
 
-export default GlobalState;
+export default Store;

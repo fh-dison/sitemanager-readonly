@@ -8,21 +8,11 @@ import LegalSections from './components/LegalSections';
 import Sites from './components/Sites';
 import Communities from './components/Communities';
 import TabsMaterialUI from './components/Tabs-MaterialUI';
-import GlobalState from './context/GlobalState';
+import Store from './context/Store';
+
+
 //import Idle from 'react-user-idle';
 
-/* Where things are 5-17
- 1.  Ready for official source repo.
- 2.  Tag master branch head.
- 3.  Merge add-global-context
-  4.  Fake Oauth.  Need real oAuth.
-
-  Pattern idea for Component:  
-  
-  3.  Alternative:  Manage paging in Store, component just calls a. context.syncCurrentCommunitiesPage()  b. uses context.communitiesData
-
-  5.  Todo:  Where and how of filtering tbd.
-*/
 
 // setInterval (()=>{
 //   console.info ("Faking renewal of access token");
@@ -32,7 +22,7 @@ import GlobalState from './context/GlobalState';
 function App() {
 
   return (
-    <GlobalState>
+    <Store>
       <Authenticator></Authenticator>
 {/*       <Idle
       timeout={10}
@@ -59,7 +49,7 @@ function App() {
         <br />
 
       </div>
-    </GlobalState>
+    </Store>
 
   );
 }
