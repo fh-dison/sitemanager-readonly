@@ -36,14 +36,10 @@ export const dataFormatter = (data) => {
 }
  */
 
-// For debugging only
-export const loadEndpointUsingAccessKey2 = async (endpoint, key) => {
-  return {status: 0};
-}
 
 // Filtering and URLS should have already been set up by now
 // TODO:  Exceptions handling
-export const loadEndpointUsingAccessKey = async (endpoint, accessToken, setAccessToken, formatter = data => data) => {
+export const loadEndpointUsingAccessToken = async (endpoint, accessToken, setAccessToken, formatter = data => data) => {
 
   const MAX_REST_RETRIES = 3;
   let finalResult = {

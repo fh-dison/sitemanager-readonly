@@ -1,7 +1,7 @@
 import React, {  useReducer } from 'react';
 import AppContext from './app-context';
 import {
-  UPDATE_OMNIBOX_FILTER, 
+  SET_OMNIBOX_FILTER, 
   UPDATE_COMMUNITIES_PAGE, 
   UPDATE_LAST_FETCHED_COMMUNITIES_PAGE,
   UPDATE_COMMUNITIES_DATA,
@@ -11,7 +11,7 @@ import appReducer from './reducers';
 import {
   REST_API_SUCCESS,
 } from 'lib/RestStatus';
-import {loadEndpointUsingAccessKey} from '../lib/DataTools';
+import {loadEndpointUsingAccessToken} from '../lib/DataTools';
 
 
 // Could be named Store
@@ -42,8 +42,8 @@ const GlobalState = props => {
    * Setter for Omnibox
    * @param {string=} omnibox 
    */
-  const updateOmniboxFilter = omnibox => {
-    dispatch({ type: UPDATE_OMNIBOX_FILTER, target: omnibox });
+  const setOmniboxFilter = omnibox => {
+    dispatch({ type: SET_OMNIBOX_FILTER, target: omnibox });
   }
     
   /**
@@ -78,7 +78,7 @@ const GlobalState = props => {
   const syncCurrentCommunitiesPage = () => {
     if (appState.lastFetchedCommunitiesPage !== appState.communitiesPage && appState.accessToken.length > 0) {
        const url = `/api/v3/communities?per_page=10&includes=division&page=${appState.communitiesPage}`;
-       loadEndpointUsingAccessKey(url, appState.accessToken, setAccessToken, communitiesDataFormatter)
+       loadEndpointUsingAccessToken(url, appState.accessToken, setAccessToken, communitiesDataFormatter)
       .then(response => {
         if (response.status === REST_API_SUCCESS) {
           dispatch({ type: UPDATE_COMMUNITIES_DATA, target: response.data});  
@@ -94,7 +94,7 @@ const GlobalState = props => {
     <AppContext.Provider
       value={{
         omniboxFilter: appState.omniboxFilter,
-        updateOmniboxFilter: updateOmniboxFilter,
+        setOmniboxFilter: setOmniboxFilter,
         communitiesPage: appState.communitiesPage,
         updateCommunitiesPage: updateCommunitiesPage,
         syncCurrentCommunitiesPage: syncCurrentCommunitiesPage,

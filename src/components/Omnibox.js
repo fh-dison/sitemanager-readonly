@@ -8,7 +8,7 @@ const Omnibox = () => {
   return (
     <>
     Filter <TextField  type="input"
-      onKeyUp={e=>{context.updateOmniboxFilter(e.target.value)  }}
+      onKeyUp={e=>{context.setOmniboxFilter(e.target.value)  }}
 
     
     /> 
