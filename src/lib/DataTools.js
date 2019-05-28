@@ -36,10 +36,10 @@ export const endpointActionUsingAccessToken = async (endpoint, accessToken, setA
     data: [],
   };
  
-  // TODO:  Formalize exception handling, esp. for transformResponse() handler 
-  const getDataAxios = async (url, token, formatter) => {
+  // TODO:  Formalize exception handling, esp. for transformResponse() handler.  Future version support action GET/POST/PUT as a parameter
+  const endpointWithAxios = async (url, token, formatter) => {
 
-   // console.info(`getDataAxios() with url ${url} token: ${token.substring(token.length - 30, token.length)}`);
+   // console.info(`endpointWithAxios() with url ${url} token: ${token.substring(token.length - 30, token.length)}`);
 
     let result = {
       status: REST_API_SUCCESS,
@@ -54,7 +54,7 @@ export const endpointActionUsingAccessToken = async (endpoint, accessToken, setA
       transformResponse: [dataParser, formatter],
     })
     .then(response => {
-      console.info(`getDataAxios() SUCCESS `);
+      console.info(`endpointWithAxios() SUCCESS `);
       result.data = response.data;
     })
     .catch(error => {
@@ -62,7 +62,7 @@ export const endpointActionUsingAccessToken = async (endpoint, accessToken, setA
       // Just debugging info
       {
         let msg = (error.response.status === 403 ? 'REST_ACCESS_TOKEN_ERROR' : 'REST_API_ERROR'); 
-        console.info(`getDataAxios() url ${url} yielded ${msg}`);
+        console.info(`endpointWithAxios() url ${url} yielded ${msg}`);
       }
     });
          
@@ -102,7 +102,7 @@ export const endpointActionUsingAccessToken = async (endpoint, accessToken, setA
   let retryCount = 0;
   let success = false;
   while (! success && retryCount < MAX_REST_RETRIES) {
-    const response = await getDataAxios(url, accessToken, formatter);
+    const response = await endpointWithAxios(url, accessToken, formatter);
     finalResult.status = response.status;
     if (response.status === REST_ACCESS_TOKEN_ERROR) {
       const accessResponse = await getRenewedAccessToken();
