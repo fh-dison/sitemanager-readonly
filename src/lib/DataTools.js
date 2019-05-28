@@ -53,7 +53,6 @@ export const loadEndpointUsingAccessToken = async (endpoint, accessToken, setAcc
 
    // console.info(`getDataAxios() with url ${url} token: ${token.substring(token.length - 30, token.length)}`);
 
-
     let result = {
       status: REST_API_SUCCESS,
       data: ''

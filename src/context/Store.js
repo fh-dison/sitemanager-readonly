@@ -74,7 +74,12 @@ const Store = props => {
    * Synchronizes current Communities data via REST API to current page (communitiesPage)
    */
   const syncCurrentCommunitiesPage = () => {
-    if (appState.lastFetchedCommunitiesPage !== appState.communitiesPage && appState.accessToken.length > 0) {
+    // Just debugging
+    if (appState.accessToken.length === 0) {
+      console.clear();
+      console.info('syncCurrentCommunitiesPage() got zero length token');
+    }
+    if (appState.lastFetchedCommunitiesPage !== appState.communitiesPage) {
        const url = `/api/v3/communities?per_page=10&includes=division&page=${appState.communitiesPage}`;
        loadEndpointUsingAccessToken(url, appState.accessToken, setAccessToken, communitiesDataFormatter)
       .then(response => {
