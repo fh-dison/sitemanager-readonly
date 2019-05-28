@@ -12,6 +12,8 @@ import {
   REST_API_SUCCESS,
 } from 'lib/RestStatus';
 import {endpointActionUsingAccessToken} from '../lib/DataTools';
+import {setupEndpoint} from '../lib/Endpoint';
+
 
 //const Store = props => {
 function Store (props) {
@@ -72,54 +74,6 @@ function Store (props) {
   }
  
 
-function buildV3URL(params) {
-
-  const defaultURLBuilder = (htmlParameter) => {
-    return `${htmlParameter}=${ params[htmlParameter]}&`;
-  };
-
-  const customURLBuilders = {
-    filters: (filters) => {
-      return params[filters].reduce((acc, curr) => {
-        return acc + `filters[${curr.column}][operator]=${curr.operator}&filters[${curr.column}][value]=${curr.value}&`;
-      }, '');
-    },
-  }
-
-  const keyToURLString = (acc, curr) => {
-     const builder = (customURLBuilders.hasOwnProperty(curr)) ? customURLBuilders[curr] : defaultURLBuilder;
-     return acc + builder(curr);
-  }
-
-  return  '?' + Object.keys(params).reduce(keyToURLString, '').slice(0, -1)
-}
-
-
-
-  function setupEndpoint(preamble) {
-
-    // Helper for urlParameters
-    function containsValue(parameter) {
-      return (typeof parameter !== 'undefined' && parameter !== '');
-    }
-
-    let filters = [];
-    if (appState.omniboxFilter.length >= 1) {
-     filters.push({column: 'name', operator: 'LIKE', value: `${appState.omniboxFilter}%`});
- //    filters.push({column: 'code', operator: 'LIKE', value: `${appState.omniboxFilter}%`});
-
-    }
-    let urlParameters = {
-      per_page: 10,
-      includes: 'division',
-      page: appState.communitiesPage,
-      filters: filters,
-    };
-
-    return preamble +  buildV3URL(urlParameters); 
-  }
-
-
   /**
    * Synchronizes current Communities data via REST API to current page (communitiesPage)
    */
@@ -131,7 +85,7 @@ function buildV3URL(params) {
     }
 
     if (appState.needSync || appState.lastFetchedCommunitiesPage !== appState.communitiesPage) {
-      endpointActionUsingAccessToken(setupEndpoint('/api/v3/communities'), appState.accessToken, setAccessToken, communitiesDataFormatter)
+      endpointActionUsingAccessToken(setupEndpoint('/api/v3/communities', appState), appState.accessToken, setAccessToken, communitiesDataFormatter)
       .then(response => {
         if (response.status === REST_API_SUCCESS) {
           dispatch({ type: UPDATE_COMMUNITIES_DATA, target: response.data});  
