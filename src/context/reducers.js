@@ -1,6 +1,6 @@
 import {
   SET_OMNIBOX_FILTER, 
-  UPDATE_COMMUNITIES_PAGE, 
+  SET_COMMUNITIES_PAGE, 
   UPDATE_LAST_FETCHED_COMMUNITIES_PAGE,
   UPDATE_COMMUNITIES_DATA,
   SET_ACCESS_TOKEN,
@@ -14,7 +14,7 @@ const appReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_OMNIBOX_FILTER:
       return { ...state, omniboxFilter: action.target};
-    case UPDATE_COMMUNITIES_PAGE:
+    case SET_COMMUNITIES_PAGE:
       return { ...state, communitiesPage: action.target};
     case UPDATE_LAST_FETCHED_COMMUNITIES_PAGE:
       return { ...state, lastFetchedCommunitiesPage: action.target};  

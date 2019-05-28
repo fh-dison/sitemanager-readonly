@@ -2,7 +2,7 @@ import React, {  useReducer } from 'react';
 import AppContext from './app-context';
 import {
   SET_OMNIBOX_FILTER, 
-  UPDATE_COMMUNITIES_PAGE, 
+  SET_COMMUNITIES_PAGE, 
   UPDATE_LAST_FETCHED_COMMUNITIES_PAGE,
   UPDATE_COMMUNITIES_DATA,
   SET_ACCESS_TOKEN,
@@ -48,8 +48,8 @@ const Store = props => {
    * Setter for Communities Page
    * @param {integer=} page 
    */
-  const updateCommunitiesPage = page => {
-    dispatch({ type: UPDATE_COMMUNITIES_PAGE, target: page });
+  const setCommunitiesPage = page => {
+    dispatch({ type: SET_COMMUNITIES_PAGE, target: page });
   }
 
   // Experimental communities formatter
@@ -94,7 +94,7 @@ const Store = props => {
         omniboxFilter: appState.omniboxFilter,
         setOmniboxFilter: setOmniboxFilter,
         communitiesPage: appState.communitiesPage,
-        updateCommunitiesPage: updateCommunitiesPage,
+        setCommunitiesPage: setCommunitiesPage,
         syncCurrentCommunitiesPage: syncCurrentCommunitiesPage,
         communitiesData: appState.communitiesData,
         lastFetchedCommunitiesPage: appState.lastFetchedCommunitiesPage,

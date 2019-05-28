@@ -58,7 +58,7 @@ return (
           offset={(context.communitiesPage - 1) * 10}
           total={context.communitiesData.total}
           onClick={(e, offset) => {
-            context.updateCommunitiesPage((offset / 10) + 1)
+            context.setCommunitiesPage((offset / 10) + 1)
           }
           }
         /> 
