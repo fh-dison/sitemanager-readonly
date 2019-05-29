@@ -251,14 +251,10 @@ export const fischerSectionsRows =
       "spec_level": "aliqua ad veniam magna tempor"
     }
   ];
-     //   { key: 'id', name: 'ID' },
-    //   { key: 'title', name: 'Title' },
-    //   { key: 'count', name: 'Count' } ];
+ 
 
   export const fischerSectionsColumns = [
-    {key: 'community_code', name: "Community Code"},
-    {key: 'section_name', name: "Section Name"},
-    {key: 'spec_level', name: "Spec Level"},
-
-
-  ];
+    {field: 'community_code', title: "Community Code"},            
+    {field: 'section_name', title: "Section Name"},
+    {field: 'spec_level', title: "Spec Level"},
+  ]  

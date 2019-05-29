@@ -1,6 +1,8 @@
 import React, {  /* useState, */  useContext, useEffect } from 'react';
-import {SortingState, /* PagingState,  IntegratedPaging, */ IntegratedSorting} from '@devexpress/dx-react-grid';
-import { Grid, Table, /* PagingPanel, */ TableHeaderRow } from '@devexpress/dx-react-grid-material-ui';
+// import {SortingState, /* PagingState,  IntegratedPaging, */ IntegratedSorting} from '@devexpress/dx-react-grid';
+// import { Grid, Table, /* PagingPanel, */ TableHeaderRow } from '@devexpress/dx-react-grid-material-ui';
+import MaterialTable from "material-table";
+
 import {communitiesColumns} from 'mockdata/communitiesData';
 import AppContext from '../context/app-context';
 import Pagination from "material-ui-flat-pagination";
@@ -21,17 +23,22 @@ const Communities = (props) => {
 
   return (
   <>
-    <Grid
-    columns={columns}
-    rows={rows}
-    >
-    <SortingState
-      defaultSorting={[{ columnName: 'community_code', direction: 'asc' }]}
-    />
-    <IntegratedSorting />  
-    <Table />
-    <TableHeaderRow showSortingControls />
-  </Grid>
+
+  <div style={{ maxWidth: "100%" }}>
+  <MaterialTable
+    columns={ columns  }
+    data={rows}
+    options={{
+      paging: false,
+      search: false,
+      showTitle: false,
+      toolbar: false,
+    }}
+  />
+  </div>
+
+
+
   <br/>
     Total {rows.length}
     <br/>
