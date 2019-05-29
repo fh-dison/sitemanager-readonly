@@ -7,7 +7,7 @@ const Omnibox = () => {
   const context = useContext(AppContext);
   return (
     <>
-    Filter <TextField  type="input"
+     <span className="material-icons MuiIcon-root MuiIcon-fontSizeSmall" aria-hidden="true" title="Search">search</span> <TextField  type="input"
       onKeyUp={e=>{context.setOmniboxFilter(e.target.value)  }}
 
     

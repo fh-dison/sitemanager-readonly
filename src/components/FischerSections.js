@@ -1,7 +1,9 @@
 import React, {  /* useState, */  useContext, useEffect } from 'react';
 import ReactDataGrid from 'react-data-grid';
+
 import {SortingState, /* PagingState,  IntegratedPaging, */ IntegratedSorting} from '@devexpress/dx-react-grid';
 import { Grid, Table, /* PagingPanel, */ TableHeaderRow } from '@devexpress/dx-react-grid-material-ui';
+import MaterialTable from "material-table";
 import {fischerSectionsRows, fischerSectionsColumns} from 'mockdata/fischerSectionsData';
 import AppContext from '../context/app-context';
 import Pagination from "material-ui-flat-pagination";
@@ -22,19 +24,27 @@ const FischerSections = (props) => {
   //const rows = context.fischerSectionsData.data;
   
   console.info('Fischer Sections rendering..', rows);
-//debugger;
  
   return (
     <>
 
-<ReactDataGrid
-    columns={columns}
-    rowGetter={i => rows[i]}
-    rowsCount={rows.length}
-    minHeight={500} 
-/>
-
-
+  <div style={{ maxWidth: "100%" }}>
+  <MaterialTable
+    columns={  [
+      {field: 'community_code', title: "Community Code"},            
+      {field: 'section_name', title: "Section Name"},
+      {field: 'spec_level', title: "Spec Level"},
+    ]            
+  }
+  data={rows}
+  options={{
+    paging: false,
+    search: false,
+    showTitle: false,
+    toolbar: false,
+  }}
+  />
+  </div>
 
   <br/>
     Total {rows.length}

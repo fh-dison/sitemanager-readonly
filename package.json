@@ -10,6 +10,7 @@
     "@material-ui/icons": "^3.0.2",
     "axios": "^0.18.0",
     "handsontable": "^7.0.2",
+    "material-table": "^1.38.0",
     "material-ui-flat-pagination": "^3.2.0",
     "pubsub-js": "^1.7.0",
     "react": "^16.8.6",
