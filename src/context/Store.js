@@ -75,32 +75,33 @@ function Store (props) {
     return {...data, data: formatted}
   }
  
+   /**
+   * Synchronizes current Communities data to current page (communitiesPage)
+   */
   function syncCurrentCommunitiesPage() {
-    // Just debugging
-    if (appState.accessToken.length === 0) {
-      console.clear();
-      console.info('syncCurrentCommunitiesPage() got zero length token');
-    }
-    syncPageData(
-      appState.needSync,
-      appState.lastFetchedCommunitiesPage, 
-      appState.communitiesPage, 
-      'communities', 
-      communitiesDataFormatter,
-      {
-        updateData:  UPDATE_COMMUNITIES_DATA,
-        updateLastFetched: UPDATE_LAST_FETCHED_COMMUNITIES_PAGE,
-        updatePage:  SET_COMMUNITIES_PAGE,
-      });
+    if (appState.needSync || appState.lastFetchedCommunitiesPage !== appState.communitiesPage) {
+      syncPageData(
+        appState.communitiesPage, 
+        'communities', 
+        communitiesDataFormatter,
+        {
+          updateData:  UPDATE_COMMUNITIES_DATA,
+          updateLastFetched: UPDATE_LAST_FETCHED_COMMUNITIES_PAGE,
+          updatePage:  SET_COMMUNITIES_PAGE,
+        });
+      }
   }
 
   /**
-   * Synchronizes current Communities data via REST API to current page (communitiesPage)
+   * Synchronizes via REST API to current page 
+   * @param {string=} currentPage
+   * @param {string=} dataSet
+   * @param {function=} formatter 
+   * @param {object=} actions
    */
-  function syncPageData(needSync, lastFetchedPage, currentPage, dataSet, formatter, actions) {
+  function syncPageData(currentPage, dataSet, formatter, actions) {
   
-    if (needSync || lastFetchedPage !== currentPage) {
-      endpointActionUsingAccessToken(setupEndpoint(`/api/v3/${dataSet}`, appState), appState.accessToken, setAccessToken, formatter)
+    endpointActionUsingAccessToken(setupEndpoint(`/api/v3/${dataSet}`, appState), appState.accessToken, setAccessToken, formatter)
       .then(response => {
         if (response.status === REST_API_SUCCESS) {
           dispatch({ type: actions.updateData, target: response.data});  
@@ -117,7 +118,7 @@ function Store (props) {
           // Something for UI to display an error message
         }
       })
-    }
+    
   }
 
 
