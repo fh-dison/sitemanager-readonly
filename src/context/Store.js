@@ -1,12 +1,14 @@
 import React, {  useReducer } from 'react';
-import AppContext from './app-context';
+import AppContext from './app-context'; 
 import {
   SET_OMNIBOX_FILTER, 
   SET_COMMUNITIES_PAGE, 
   UPDATE_LAST_FETCHED_COMMUNITIES_PAGE,
   UPDATE_COMMUNITIES_DATA,
   SET_ACCESS_TOKEN,
-} from './actions';
+  SET_FISCHER_SECTIONS_PAGE,
+} from './actions'; 
+
 import appReducer from './reducers';
 import { REST_API_SUCCESS } from 'lib/RestStatus';
 import {endpointActionUsingAccessToken} from '../lib/DataTools';
@@ -20,8 +22,10 @@ function Store (props) {
     omniboxFilter: '',
     communitiesPage: 1,
     communitiesData: {data: []},
-    fetchCurrentCommunitiesData: () =>{},
     lastFetchedCommunitiesPage: -1,
+    fischerSectionsPage: 1,
+    fischerSectionsData: {data: []},
+    lastFetchedFischerSectionsPage: -1,
     accessToken: '',
     needSync: false,
   });
@@ -71,28 +75,41 @@ function Store (props) {
     return {...data, data: formatted}
   }
  
-
-  /**
-   * Synchronizes current Communities data via REST API to current page (communitiesPage)
-   */
   function syncCurrentCommunitiesPage() {
     // Just debugging
     if (appState.accessToken.length === 0) {
       console.clear();
       console.info('syncCurrentCommunitiesPage() got zero length token');
     }
+    syncPageData(
+      appState.lastFetchedCommunitiesPage, 
+      appState.communitiesPage, 
+      'communities', 
+      communitiesDataFormatter,
+      {
+        updateData:  UPDATE_COMMUNITIES_DATA,
+        updateLastFetched: UPDATE_LAST_FETCHED_COMMUNITIES_PAGE,
+        updatePage:  SET_COMMUNITIES_PAGE,
+      });
+  }
 
-    if (appState.needSync || appState.lastFetchedCommunitiesPage !== appState.communitiesPage) {
-      endpointActionUsingAccessToken(setupEndpoint('/api/v3/communities', appState), appState.accessToken, setAccessToken, communitiesDataFormatter)
+  /**
+   * Synchronizes current Communities data via REST API to current page (communitiesPage)
+   */
+  function syncPageData(lastFetchedPage, currentPage, dataSet, formatter, actions) {
+  
+
+    if (appState.needSync || lastFetchedPage !== currentPage) {
+      endpointActionUsingAccessToken(setupEndpoint(`/api/v3/${dataSet}`, appState), appState.accessToken, setAccessToken, formatter)
       .then(response => {
         if (response.status === REST_API_SUCCESS) {
-          dispatch({ type: UPDATE_COMMUNITIES_DATA, target: response.data});  
-          dispatch({ type: UPDATE_LAST_FETCHED_COMMUNITIES_PAGE, target: appState.communitiesPage});
+          dispatch({ type: actions.updateData, target: response.data});  
+          dispatch({ type: actions.updateLastFetched, target: currentPage});
 
           // TODO:  Is this test needed?
           //if (response.data.current_page) {
             console.info('sync setting comm. page to current_page', response.data.current_page);
-            dispatch({ type: SET_COMMUNITIES_PAGE, target: response.data.current_page });
+            dispatch({ type: actions.updatePage, target: response.data.current_page });
           //}
 
           // TODO: Need page number info from API call
@@ -102,6 +119,22 @@ function Store (props) {
       })
     }
   }
+
+
+   
+  /**
+   * Setter for FischerSections Page
+   * @param {integer=} page 
+   */
+   function setFischerSectionsPage (page) {
+    dispatch({ type: SET_FISCHER_SECTIONS_PAGE, target: page });
+  }
+
+
+
+
+
+
 
   return (
     <AppContext.Provider

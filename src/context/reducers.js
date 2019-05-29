@@ -4,6 +4,7 @@ import {
   UPDATE_LAST_FETCHED_COMMUNITIES_PAGE,
   UPDATE_COMMUNITIES_DATA,
   SET_ACCESS_TOKEN,
+  SET_FISCHER_SECTIONS_PAGE,
 } from './actions';
 
 const initialState = {
@@ -22,7 +23,8 @@ const appReducer = (state = initialState, action) => {
       return { ...state, communitiesData: action.target};  
     case SET_ACCESS_TOKEN:
        return { ...state, accessToken: action.target};
-
+    case SET_FISCHER_SECTIONS_PAGE:
+      return { ...state, fischerSectionsPage: action.target}
     default:
     return state;
   }
