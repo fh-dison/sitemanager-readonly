@@ -82,6 +82,7 @@ function Store (props) {
       console.info('syncCurrentCommunitiesPage() got zero length token');
     }
     syncPageData(
+      appState.needSync,
       appState.lastFetchedCommunitiesPage, 
       appState.communitiesPage, 
       'communities', 
@@ -96,10 +97,9 @@ function Store (props) {
   /**
    * Synchronizes current Communities data via REST API to current page (communitiesPage)
    */
-  function syncPageData(lastFetchedPage, currentPage, dataSet, formatter, actions) {
+  function syncPageData(needSync, lastFetchedPage, currentPage, dataSet, formatter, actions) {
   
-
-    if (appState.needSync || lastFetchedPage !== currentPage) {
+    if (needSync || lastFetchedPage !== currentPage) {
       endpointActionUsingAccessToken(setupEndpoint(`/api/v3/${dataSet}`, appState), appState.accessToken, setAccessToken, formatter)
       .then(response => {
         if (response.status === REST_API_SUCCESS) {
