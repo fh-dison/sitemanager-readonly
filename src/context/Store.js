@@ -89,12 +89,10 @@ function Store (props) {
           dispatch({ type: UPDATE_COMMUNITIES_DATA, target: response.data});  
           dispatch({ type: UPDATE_LAST_FETCHED_COMMUNITIES_PAGE, target: appState.communitiesPage});
 
-        //  debugger;
-// TODO:  Is this test needed?
+          // TODO:  Is this test needed?
           //if (response.data.current_page) {
             console.info('sync setting comm. page to current_page', response.data.current_page);
             dispatch({ type: SET_COMMUNITIES_PAGE, target: response.data.current_page });
-
           //}
 
           // TODO: Need page number info from API call
