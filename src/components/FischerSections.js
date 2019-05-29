@@ -1,59 +1,57 @@
 import React, {  /* useState, */  useContext, useEffect } from 'react';
-// import ReactDataGrid from 'react-data-grid';
+import ReactDataGrid from 'react-data-grid';
 import {SortingState, /* PagingState,  IntegratedPaging, */ IntegratedSorting} from '@devexpress/dx-react-grid';
 import { Grid, Table, /* PagingPanel, */ TableHeaderRow } from '@devexpress/dx-react-grid-material-ui';
-import {fischerSectionsRows,fischerSectionsColumns} from 'mockdata/fischerSectionsData';
+import {fischerSectionsRows, fischerSectionsColumns} from 'mockdata/fischerSectionsData';
 import AppContext from '../context/app-context';
 import Pagination from "material-ui-flat-pagination";
 
 const FischerSections = (props) => {
   const context = useContext(AppContext);
 
-/*   useEffect(() => {
-    context.syncCurrentCommunitiesPage();
+    useEffect(() => {
+    context.syncCurrentFischerSectionsPage();
  // eslint-disable-next-line react-hooks/exhaustive-deps
- }, [context.communitiesPage, context.omniboxFilter]);
- */
+ }, [context.fischerSectionsPage, context.omniboxFilter]);
+  
 
   // TODO:  This should probably go in datatools as a transformResponse for back end.   ?
-  //const columns = communitiesColumns;
-  //const rows = context.communitiesData.data;
-
-  const rows = fischerSectionsRows;
+  //const rows = fischerSectionsRows;
+  const rows = context.fischerSectionsData.data
   const columns = fischerSectionsColumns;
+  //const rows = context.fischerSectionsData.data;
   
-  console.info('Fischer Sections rendering..');
-
+  console.info('Fischer Sections rendering..', rows);
+//debugger;
  
   return (
     <>
-    <Grid
+
+<ReactDataGrid
     columns={columns}
-    rows={rows}
-    >
-    <SortingState
-      defaultSorting={[{ columnName: 'community_code', direction: 'asc' }]}
-    />
-    <IntegratedSorting />  
-    <Table />
-    <TableHeaderRow showSortingControls />
-  </Grid>
+    rowGetter={i => rows[i]}
+    rowsCount={rows.length}
+    minHeight={500} 
+/>
+
+
+
   <br/>
     Total {rows.length}
     <br/>
     Filter {context.omniboxFilter.length === 0 ? 'none ' : context.omniboxFilter}
     <br/>
-    Page {context.communitiesPage}
+    Page {context.fischerSectionsPage}
     <br/>
-    {/* <Pagination
+     <Pagination
           limit={10}
-          offset={(context.communitiesPage - 1) * 10}
-          total={context.communitiesData.total}
+          offset={(context.fischerSectionsPage - 1) * 10}
+          total={context.fischerSectionsData.total}
           onClick={(e, offset) => {
-            context.setCommunitiesPage((offset / 10) + 1)
+            context.setFischerSectionsPage((offset / 10) + 1)
           }
           }
-        />  */}
+        />   
     
     </>    
   )

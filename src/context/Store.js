@@ -7,6 +7,8 @@ import {
   UPDATE_COMMUNITIES_DATA,
   SET_ACCESS_TOKEN,
   SET_FISCHER_SECTIONS_PAGE,
+  UPDATE_LAST_FETCHED_FISCHER_SECTIONS_PAGE,
+  UPDATE_FISCHER_SECTIONS_DATA,
 } from './actions'; 
 
 import appReducer from './reducers';
@@ -75,9 +77,9 @@ function Store (props) {
     return {...data, data: formatted}
   }
  
-   /**
-   * Synchronizes current Communities data to current page (communitiesPage)
-   */
+  /**
+  * Synchronizes current Communities data to current page (communitiesPage)
+  */
   function syncCurrentCommunitiesPage() {
     if (appState.needSync || appState.lastFetchedCommunitiesPage !== appState.communitiesPage) {
       syncPageData(
@@ -88,20 +90,62 @@ function Store (props) {
           updateData:  UPDATE_COMMUNITIES_DATA,
           updateLastFetched: UPDATE_LAST_FETCHED_COMMUNITIES_PAGE,
           updatePage:  SET_COMMUNITIES_PAGE,
+        },
+        {includes: 'division'});
+      }
+  }
+
+
+  // Experimental fischer sections formatter
+  const fischerSectionsDataFormatter = (data) => {
+
+    if (! data.data || ! Array.isArray(data.data)) {
+      return data;
+    }
+    const formatted = data.data.map(fischerSection=>{
+      return {
+        community_code: fischerSection.community_id,
+        section_name: fischerSection.section_name,
+        spec_level: fischerSection.spec_level_id,
+      };
+    });
+    return {...data, data: formatted}
+  }
+
+
+  /**
+  * Synchronizes current FischerSections data to current page (communitiesPage)
+  */
+  function syncCurrentFischerSectionsPage() {
+    if (appState.needSync || appState.lastFetchedFischerSectionsPage!== appState.fischerSectionsPage) {
+      syncPageData(
+        appState.fischerSectionsPage, 
+        'fischerSections', 
+        fischerSectionsDataFormatter,
+        {
+          updateData:  UPDATE_FISCHER_SECTIONS_DATA,
+          updateLastFetched: UPDATE_LAST_FETCHED_FISCHER_SECTIONS_PAGE,
+          updatePage:  SET_FISCHER_SECTIONS_PAGE,
         });
       }
   }
 
+
+
   /**
    * Synchronizes via REST API to current page 
-   * @param {string=} currentPage
+   * @param {integer=} currentPage
    * @param {string=} dataSet
    * @param {function=} formatter 
    * @param {object=} actions
    */
-  function syncPageData(currentPage, dataSet, formatter, actions) {
+  function syncPageData(currentPage, dataSet, formatter, actions, requiredUrlParams = {}) {
   
-    endpointActionUsingAccessToken(setupEndpoint(`/api/v3/${dataSet}`, appState), appState.accessToken, setAccessToken, formatter)
+    endpointActionUsingAccessToken(
+      setupEndpoint(`/api/v3/${dataSet}`, appState.omniboxFilter, currentPage, requiredUrlParams), 
+      appState.accessToken, 
+      setAccessToken, 
+      formatter)
       .then(response => {
         if (response.status === REST_API_SUCCESS) {
           dispatch({ type: actions.updateData, target: response.data});  
@@ -122,7 +166,6 @@ function Store (props) {
   }
 
 
-   
   /**
    * Setter for FischerSections Page
    * @param {integer=} page 
@@ -132,21 +175,24 @@ function Store (props) {
   }
 
 
-
-
-
-
-
   return (
     <AppContext.Provider
       value={{
         omniboxFilter: appState.omniboxFilter,
         setOmniboxFilter: setOmniboxFilter,
+
         communitiesPage: appState.communitiesPage,
         setCommunitiesPage: setCommunitiesPage,
         syncCurrentCommunitiesPage: syncCurrentCommunitiesPage,
         communitiesData: appState.communitiesData,
         lastFetchedCommunitiesPage: appState.lastFetchedCommunitiesPage,
+
+        fischerSectionsPage: appState.fischerSectionsPage,
+        setFischerSectionsPage: setFischerSectionsPage,
+        syncCurrentFischerSectionsPage: syncCurrentFischerSectionsPage,
+        fischerSectionsData: appState.fischerSectionsData,
+        lastFetchedFischerSectionsPage: appState.lastFetchedFischerSectionsPage,
+
         setAccessToken: setAccessToken,
         accessToken: appState.accessToken,
         needSync: appState.needSync,

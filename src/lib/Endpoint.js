@@ -30,20 +30,21 @@ function buildV3URL(params) {
   * @param {string=} preamble 
   * @param {object=} appState 
   */
-export function setupEndpoint(preamble, appState) {
+  // TODO:  What column(s)?  
+export function setupEndpoint(preamble, omniboxFilter, page, requiredUrlParams = {}) {
 
     let filters = [];
-    if (appState.omniboxFilter.length >= 1) {
-     filters.push({column: 'name', operator: 'LIKE', value: `${appState.omniboxFilter}%`});
+    if (omniboxFilter.length >= 1) {
+     filters.push({column: 'name', operator: 'LIKE', value: `${omniboxFilter}%`});
  //    filters.push({column: 'code', operator: 'LIKE', value: `${appState.omniboxFilter}%`});
 
     }
     let urlParameters = {
+      ...requiredUrlParams,
       per_page: 10,
-      includes: 'division',  // TODO:  This only applies to communities.
-      page: appState.communitiesPage,
+      page: page,
       filters: filters,
     };
-
+//  return { ...state, visibilityFilter: action.filter }
     return preamble +  buildV3URL(urlParameters); 
   }

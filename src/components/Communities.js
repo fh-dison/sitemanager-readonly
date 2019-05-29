@@ -15,8 +15,8 @@ const Communities = (props) => {
   }, [context.communitiesPage, context.omniboxFilter]);
 
   // TODO:  This should probably go in datatools as a transformResponse for back end.   ?
-  const columns = communitiesColumns;
   const rows = context.communitiesData.data;
+  const columns = communitiesColumns;
   console.info('Communities rendering..');
 
   return (
