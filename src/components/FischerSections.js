@@ -35,21 +35,15 @@ const FischerSections = (props) => {
   </div>
 
   <br/>
-    Total {rows.length}
-    <br/>
-    Filter {context.omniboxFilter.length === 0 ? 'none ' : context.omniboxFilter}
-    <br/>
-    Page {context.fischerSectionsPage}
-    <br/>
-     <Pagination
-        limit={10}
-        offset={(context.fischerSectionsPage - 1) * 10}
-        total={context.fischerSectionsData.total}
-        onClick={(e, offset) => {
-          context.setFischerSectionsPage((offset / 10) + 1)
-        }
-        }
-        />   
+  <Pagination
+    limit={10}
+    offset={(context.fischerSectionsPage - 1) * 10}
+    total={context.fischerSectionsData.total}
+    onClick={(e, offset) => {
+      context.setFischerSectionsPage((offset / 10) + 1)
+    }
+    }
+    />   
     
     </>    
   )

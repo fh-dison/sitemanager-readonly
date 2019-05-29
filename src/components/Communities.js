@@ -33,6 +33,7 @@ const Communities = (props) => {
       search: false,
       showTitle: false,
       toolbar: false,
+      sorting: false,
     }}
   />
   </div>
@@ -40,12 +41,12 @@ const Communities = (props) => {
 
 
   <br/>
-    Total {rows.length}
+    {/* Total {rows.length}
     <br/>
     Filter {context.omniboxFilter.length === 0 ? 'none ' : context.omniboxFilter}
     <br/>
     Page {context.communitiesPage}
-    <br/>
+    <br/> */}
     <Pagination
           limit={10}
           offset={(context.communitiesPage - 1) * 10}
@@ -58,8 +59,8 @@ const Communities = (props) => {
     <br/>
 
      {/* Just debugging */}
-    <span onClick={e=>{console.info('access_token in Global Context', context.accessToken)}}>Debug</span>
-    <span onClick={e=>{
+    <span style={{color: ' #f2f3f4 '}} onClick={e=>{console.info('access_token in Global Context', context.accessToken)}}>Debug</span>
+    <span style={{color: ' #f2f3f4 '}} onClick={e=>{
       console.clear();
       endpointActionUsingAccessToken('/api/v3/communities?per_page=10&includes=division&page=1', context.accessToken).then(response => {
       context.setAccessToken(response.accessToken); 

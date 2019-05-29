@@ -11,12 +11,11 @@ import TabsMaterialUI from './components/Tabs-MaterialUI';
 import Store from './context/Store';
 
 
-//import Idle from 'react-user-idle';
-
-
 // setInterval (()=>{
-//   console.info ("Faking renewal of access token");
-// }, 15 * 1000);
+//   console.info ("Window height is ", window.innerHeight);
+// }, 5 * 1000);
+
+//import Idle from 'react-user-idle';
 
 
 function App() {
