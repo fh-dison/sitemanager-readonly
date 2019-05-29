@@ -21,7 +21,7 @@ const FischerSections = (props) => {
  
   return (
   <>
-  <div style={{ maxWidth: "100%" }}>
+  <div style={{ maxWidth: "50%" }}>
   <MaterialTable
     columns={ columns  }
     data={rows}
