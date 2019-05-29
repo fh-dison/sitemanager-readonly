@@ -8,13 +8,11 @@ import {
   SET_ACCESS_TOKEN,
 } from './actions';
 import appReducer from './reducers';
-import {
-  REST_API_SUCCESS,
-} from 'lib/RestStatus';
+import { REST_API_SUCCESS } from 'lib/RestStatus';
 import {endpointActionUsingAccessToken} from '../lib/DataTools';
 import {setupEndpoint} from '../lib/Endpoint';
 
-
+// Refer to point #8
 //const Store = props => {
 function Store (props) {
  

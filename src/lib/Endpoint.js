@@ -1,3 +1,8 @@
+  /**
+   * URL builder - converts params object to URL string
+   * @param {object=} params 
+   */
+
 function buildV3URL(params) {
 
   const defaultURLBuilder = (htmlParameter) => {
@@ -20,7 +25,11 @@ function buildV3URL(params) {
   return  '?' + Object.keys(params).reduce(keyToURLString, '').slice(0, -1)
 }
 
-
+/**
+  * Sets up endpoint by converting current appState values to URL string
+  * @param {string=} preamble 
+  * @param {object=} appState 
+  */
 export function setupEndpoint(preamble, appState) {
 
     let filters = [];
@@ -31,7 +40,7 @@ export function setupEndpoint(preamble, appState) {
     }
     let urlParameters = {
       per_page: 10,
-      includes: 'division',
+      includes: 'division',  // TODO:  This only applies to communities.
       page: appState.communitiesPage,
       filters: filters,
     };
